@@ -22,7 +22,11 @@ const unknownEndpointHandler = (req, res) => {
 const errorHandler = (error, req, res, next) => {
   logger.error(error.message);
 
-  if (error.name === "ValidationError" || error.name === "CastError") {
+  if (
+    error.name === "ValidationError" ||
+    error.name === "ValidatorError" ||
+    error.name === "CastError"
+  ) {
     return res.sendStatus(400);
   }
 
