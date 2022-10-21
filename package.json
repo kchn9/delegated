@@ -1,0 +1,26 @@
+{
+  "name": "delegated",
+  "version": "1.0.0",
+  "description": "App to manage work abroad delegations.  ",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kchn9/delegated.git"
+  },
+  "author": "kchn9",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kchn9/delegated/issues"
+  },
+  "homepage": "https://github.com/kchn9/delegated#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "nodemon": "^2.0.20"
+  }
+}
