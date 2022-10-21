@@ -41,10 +41,11 @@ tripsRouter.post("/", (req, res, next) => {
 
 // PUT /api/v1/trips/:id
 tripsRouter.put("/:id", (req, res, next) => {
-  const { country, startDate, endDate } = req.body;
+  const { title, country, startDate, endDate } = req.body;
   const id = req.params.id;
 
   const updateQuery = {
+    title,
     country,
     startDate,
     endDate,

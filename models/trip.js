@@ -7,6 +7,16 @@ const tripSchema = new mongoose.Schema({
     minLength: 4,
     maxLength: 56,
   },
+  title: {
+    type: String,
+    minLength: 4,
+    maxLength: 96,
+    default: function () {
+      return `${this.country} from ${this.startDate.toLocaleDateString(
+        "pl-PL"
+      )} to ${this.endDate.toLocaleDateString("pl-PL")}`;
+    },
+  },
   startDate: {
     type: Date,
     required: true,
