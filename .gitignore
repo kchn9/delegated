@@ -3,3 +3,4 @@ node_modules
 .eslintignore
 .DS_Store
 .eslintrc.js
+fly.toml
