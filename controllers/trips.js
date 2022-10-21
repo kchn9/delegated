@@ -2,6 +2,7 @@ const tripsRouter = require("express").Router();
 const mongoose = require("mongoose");
 const Trip = require("../models/trip");
 
+// GET /api/v1/trips
 tripsRouter.get("/", (req, res, next) => {
   Trip.find({})
     .then((allTrips) => {
@@ -10,6 +11,7 @@ tripsRouter.get("/", (req, res, next) => {
     .catch((error) => next(error));
 });
 
+// GET /api/v1/trips/:id
 tripsRouter.get("/:id", (req, res, next) => {
   Trip.findById(req.params.id)
     .then((trip) => {
@@ -18,6 +20,7 @@ tripsRouter.get("/:id", (req, res, next) => {
     .catch((error) => next(error));
 });
 
+// POST /api/v1/trips
 tripsRouter.post("/", (req, res, next) => {
   const { country, startDate, endDate } = req.body;
   const newTrip = new Trip({
@@ -36,6 +39,7 @@ tripsRouter.post("/", (req, res, next) => {
     });
 });
 
+// PUT /api/v1/trips/:id
 tripsRouter.put("/:id", (req, res, next) => {
   const { country, startDate, endDate } = req.body;
   const id = req.params.id;
@@ -89,6 +93,7 @@ tripsRouter.put("/:id", (req, res, next) => {
   }
 });
 
+// DELETE /api/v1/trips/:id
 tripsRouter.delete("/:id", (req, res, next) => {
   Trip.findByIdAndRemove(req.params.id)
     .then(() => {
