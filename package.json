@@ -1,10 +1,11 @@
 {
   "name": "delegated",
   "version": "1.0.0",
-  "description": "App to manage work abroad delegations.  ",
+  "description": "App to manage work abroad delegations.",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
+    "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,6 +22,10 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "nodemon": "^2.0.20"
+    "mongoose": "^6.6.6"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20",
+    "eslint": "^8.25.0"
   }
 }
