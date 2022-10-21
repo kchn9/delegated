@@ -1,9 +1,5 @@
 const mongoose = require("mongoose");
 
-function computeLength(startDate, endDate) {
-  return (endDate - startDate) / (1000 * 60 * 60 * 24); // 1000ms in s, 60s in min, 60min in h, 24h in day
-}
-
 const tripSchema = new mongoose.Schema({
   country: {
     type: String,
@@ -19,19 +15,24 @@ const tripSchema = new mongoose.Schema({
     type: Date,
     required: true,
     validate: function (value) {
-      return value > this.startDate;
+      return new Date(value) > new Date(this.startDate);
     },
   },
-  name: {
-    type: String,
-    default: `Delegation in ${this.country} from ${this.startDate} to ${this.endDate}`,
-  },
-  length: {
+  daysLength: {
     type: Number,
-    default: computeLength(this.startDate, this.endDate),
+    required: true,
+    default: function () {
+      const start = new Date(this.startDate);
+      const end = new Date(this.endDate);
+      return (end - start) / (1000 * 60 * 60 * 24); // 1000ms in s, 60s in min, 60min in h, 24h in day
+    },
+    validate: function (v) {
+      return v > 0;
+    },
   },
   created: {
     type: Date,
+    required: true,
     default: Date.now(),
   },
 });
