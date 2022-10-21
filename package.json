@@ -17,6 +17,7 @@
   "bugs": {
     "url": "https://github.com/kchn9/delegated/issues"
   },
+  "homepage": "https://delegated-app.fly.dev/api/v1/",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
