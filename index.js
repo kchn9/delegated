@@ -3,6 +3,6 @@ const http = require("http");
 const app = require("./app");
 const logger = require("./utils/logger");
 
-http.createServer(app).listen(() => {
+http.createServer(app).listen(config.PORT, () => {
   logger.info(`Server is running on PORT: ${config.PORT}`);
 });
