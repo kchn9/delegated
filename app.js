@@ -5,6 +5,7 @@ const cors = require("cors");
 const logger = require("./utils/logger");
 const middleware = require("./utils/middleware");
 const mongoose = require("mongoose");
+const usersRouter = require("./controllers/users");
 const tripsRouter = require("./controllers/trips");
 
 logger.info(`Connecting to MongoDB@:${config.MONGODB_URI}`);
@@ -21,6 +22,7 @@ app.use(cors());
 app.use(express.json());
 app.use(middleware.requestLogger);
 
+app.use("/api/v1/users", usersRouter);
 app.use("/api/v1/trips", tripsRouter);
 
 app.use(middleware.unknownEndpointHandler);
