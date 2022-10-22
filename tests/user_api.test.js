@@ -15,6 +15,12 @@ beforeEach(async () => {
 });
 
 describe("when there is initially one user in db", () => {
+  test("should return all users as json", async () => {
+    const response = await api
+      .get("/api/v1/users")
+      .expect(200)
+      .expect("Content-Type", /json/);
+  });
   describe("user creation", () => {
     test("succeeds with a fresh username and strong password", async () => {
       const beforeCreation = await helper.getUsers();
