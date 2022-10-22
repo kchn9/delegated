@@ -13,14 +13,25 @@ beforeEach(async () => {
   await Promise.all(promiseArray);
 });
 
-describe("Trip API", () => {
-  // GET /api/v1/trips
+describe("when there is initially some trips saved", () => {
   test("trips are returned as json", async () => {
     await api.get("/api/v1/trips").expect(200).expect("Content-Type", /json/);
   });
 
-  // GET /api/v1/trips/:id
-  test("specific trip can be viewed", async () => {
+  test("all trips are returned", async () => {
+    const response = await api.get("/api/v1/trips");
+    expect(response.body).toHaveLength(helper.initialTrips.length);
+  });
+
+  test("specific trip is in returned", async () => {
+    const response = await api.get("/api/v1/trips");
+    const countries = response.body.map((trip) => trip.country);
+    expect(countries).toContainEqual(helper.initialTrips[0].country);
+  });
+});
+
+describe("viewing a specific trip", () => {
+  test("succeds with valid id", async () => {
     const selectedTrip = (await helper.getTrips())[0];
     const expected = JSON.parse(JSON.stringify(selectedTrip));
 
@@ -30,15 +41,21 @@ describe("Trip API", () => {
       .expect("Content-Type", /json/);
 
     expect(response.body).toMatchObject(expected);
-  }, 10000);
-
-  test("all trips are returned", async () => {
-    const response = await api.get("/api/v1/trips");
-    expect(response.body).toHaveLength(helper.initialTrips.length);
   });
 
-  // POST /api/v1/trips
-  test("a valid trip can be added", async () => {
+  test("fails with statuscode 404 if trip does not exist", async () => {
+    const nonExistingId = await helper.generateNonExistingId();
+    await api.get(`/api/v1/trips/${nonExistingId}`).expect(404);
+  });
+
+  test("fails with statuscode 400 if id is invalid", async () => {
+    const invalidId = "a123dsad123";
+    await api.get(`/api/v1/trips/${invalidId}`).expect(400);
+  });
+});
+
+describe("addition of new trip", () => {
+  test("succeds with valid data", async () => {
     const newTrip = {
       country: "Moldavia",
       startDate: "2022-05-01T14:22:00",
@@ -58,9 +75,9 @@ describe("Trip API", () => {
     expect(countries).toContainEqual(newTrip.country);
   });
 
-  // POST /api/v1/trips
-  test("a trip without country is not added", async () => {
+  test("fails with status code 400 if data is invalid", async () => {
     const newTrip = {
+      // missing country
       startDate: "2022-05-01T14:22:00",
       endDate: "2023-01-01T00:01:00",
     };
@@ -69,9 +86,10 @@ describe("Trip API", () => {
     const response = await api.get("/api/v1/trips");
     expect(response.body).toHaveLength(helper.initialTrips.length);
   });
+});
 
-  // DELETE /api/v1/trips/:id
-  test("a trip can be deleted", async () => {
+describe("deletion of trip", () => {
+  test("succeds with status code 200 if id is valid", async () => {
     const selectedTrip = (await helper.getTrips())[0];
     await api.delete(`/api/v1/trips/${selectedTrip.id}`).expect(200);
 
@@ -80,9 +98,10 @@ describe("Trip API", () => {
     const countries = afterDelete.map((trip) => trip.country);
     expect(countries).not.toContainEqual(selectedTrip.country);
   });
+});
 
-  // PUT /api/v1/trips/:id
-  test("trip can be edited with valid query", async () => {
+describe("update of trip", () => {
+  test("succeds with status code 200 if query is valid", async () => {
     const selectedTrip = (await helper.getTrips())[0];
     const updateQuery = {
       country: "Georgia",
