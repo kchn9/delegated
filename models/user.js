@@ -9,6 +9,9 @@ const userSchema = new mongoose.Schema({
     uniqueCaseInsensitive: true,
     minLength: 6,
     maxLength: 36,
+    validate: function (v) {
+      return /^[a-zA-Z0-9]{6,36}$/.test(v);
+    },
   },
   passwordHash: String,
   trips: [
