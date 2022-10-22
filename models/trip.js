@@ -45,6 +45,10 @@ const tripSchema = new mongoose.Schema({
     required: true,
     default: Date.now(),
   },
+  user: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: "User",
+  },
 });
 
 tripSchema.set("toJSON", {
