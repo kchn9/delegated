@@ -8,6 +8,17 @@ function validatePassword(password) {
   );
 }
 
+// GET /api/v1/users
+usersRouter.get("/", (req, res, next) => {
+  User.find({})
+    .then((users) => {
+      res.json(users);
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
+
 // POST /api/v1/users
 usersRouter.post("/", (req, res, next) => {
   const { username, password } = req.body;
