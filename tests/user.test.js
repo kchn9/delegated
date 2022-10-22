@@ -7,8 +7,7 @@ const helper = require("./test_helper");
 
 beforeEach(async () => {
   await User.deleteMany();
-  const passwordHash = await bcrypt.hash("Str0nGP@ssw0rD", 10);
-  const user = new User({ username: "testuser", passwordHash });
+  const user = new User((await helper.initialUsers())[0]);
   await user.save();
 });
 
@@ -20,7 +19,7 @@ describe("when there is initially one user in db", () => {
 
   test("returns users without hashsed password", async () => {
     const users = await helper.getUsers();
-    users.every((user) => expect(user.hashedPassword).not.toBeDefined());
+    users.every((user) => expect(user.passwordHash).not.toBeDefined());
   });
 });
 
@@ -68,7 +67,7 @@ describe("user creation", () => {
     });
     test("should not validate if username is not unique", async () => {
       const user = new User({
-        username: "testuser",
+        username: (await helper.getUsers())[0].username,
         hashedPassword: await bcrypt.hash("C0rrectPassword", 10),
       });
       await expect(user.validate()).rejects.toThrow(
