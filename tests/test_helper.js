@@ -18,7 +18,21 @@ const getTrips = async () => {
   return trips.map((trip) => trip.toJSON());
 };
 
+const generateNonExistingId = async () => {
+  const trip = new Trip({
+    country: "Java",
+    startDate: "1970-01-01T00:00:00",
+    endDate: "2000-01-01T00:00:00",
+  });
+
+  await trip.save();
+  await trip.remove();
+
+  return trip._id.toString();
+};
+
 module.exports = {
   initialTrips,
   getTrips,
+  generateNonExistingId,
 };
