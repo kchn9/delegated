@@ -1,9 +1,15 @@
+const config = require("./config");
+
 const info = (...props) => {
-  console.log(...props);
+  if (config.NODE_ENV !== "test") {
+    console.log(...props);
+  }
 };
 
 const error = (...props) => {
-  console.error(...props);
+  if (config.NODE_ENV !== "test") {
+    console.error(...props);
+  }
 };
 
 module.exports = {
