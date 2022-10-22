@@ -15,7 +15,11 @@ tripsRouter.get("/", (req, res, next) => {
 tripsRouter.get("/:id", (req, res, next) => {
   Trip.findById(req.params.id)
     .then((trip) => {
-      res.json(trip);
+      if (trip === null) {
+        res.sendStatus(404);
+      } else {
+        res.json(trip);
+      }
     })
     .catch((error) => next(error));
 });
