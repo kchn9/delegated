@@ -1,4 +1,5 @@
 const Trip = require("../models/trip");
+const User = require("../models/user");
 
 const initialTrips = [
   {
@@ -18,6 +19,11 @@ const getTrips = async () => {
   return trips.map((trip) => trip.toJSON());
 };
 
+const getUsers = async () => {
+  const users = await User.find({});
+  return users.map((user) => user.toJSON());
+};
+
 const generateNonExistingId = async () => {
   const trip = new Trip({
     country: "Java",
@@ -34,5 +40,6 @@ const generateNonExistingId = async () => {
 module.exports = {
   initialTrips,
   getTrips,
+  getUsers,
   generateNonExistingId,
 };
