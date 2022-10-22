@@ -8,11 +8,10 @@ const api = supertest(app);
 
 beforeEach(async () => {
   await Trip.deleteMany({});
-  let tripObj = new Trip(helper.initialTrips[0]);
-  await tripObj.save();
-  tripObj = new Trip(helper.initialTrips[1]);
-  await tripObj.save();
-}, 10000);
+  const tripObjects = helper.initialTrips.map((trip) => new Trip(trip));
+  const promiseArray = tripObjects.map((trip) => trip.save());
+  await Promise.all(promiseArray);
+});
 
 // GET /api/v1/trips
 test("trips are returned as json", async () => {
@@ -55,7 +54,7 @@ test("a valid trip can be added", async () => {
   expect(response.body).toHaveLength(helper.initialTrips.length + 1);
 
   const countries = response.body.map((trip) => trip.country);
-  expect(countries).toContain(newTrip.country);
+  expect(countries).toContainEqual(newTrip.country);
 });
 
 // POST /api/v1/trips
@@ -85,7 +84,7 @@ test("trip can be edited with valid query", async () => {
 
   const afterUpdate = await helper.getTrips();
   const countries = afterUpdate.map((trip) => trip.country);
-  expect(countries).toContain(updateQuery.country);
+  expect(countries).toContainEqual(updateQuery.country);
 });
 
 // DELETE /api/v1/trips/:id
@@ -96,7 +95,7 @@ test("a trip can be deleted", async () => {
   const afterDelete = await helper.getTrips();
   expect(afterDelete).toHaveLength(helper.initialTrips.length - 1);
   const countries = afterDelete.map((trip) => trip.country);
-  expect(countries).not.toContain(selectedTrip.country);
+  expect(countries).not.toContainEqual(selectedTrip.country);
 });
 
 afterAll(() => {
