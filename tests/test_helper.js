@@ -1,5 +1,15 @@
 const Trip = require("../models/trip");
 const User = require("../models/user");
+const bcrypt = require("bcrypt");
+
+const initialUsers = async () => {
+  return [
+    {
+      username: "testuser",
+      passwordHash: await bcrypt.hash("Str0nGP@ssw0rD", 10),
+    },
+  ];
+};
 
 const initialTrips = [
   {
@@ -39,6 +49,7 @@ const generateNonExistingId = async () => {
 
 module.exports = {
   initialTrips,
+  initialUsers,
   getTrips,
   getUsers,
   generateNonExistingId,
