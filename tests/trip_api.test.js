@@ -70,6 +70,24 @@ test("a trip without country is not added", async () => {
   expect(response.body).toHaveLength(helper.initialTrips.length);
 });
 
+// PUT /api/v1/trips/:id
+test("trip can be edited with valid query", async () => {
+  const selectedTrip = (await helper.getTrips())[1];
+  const updateQuery = {
+    country: "Libya",
+    startDate: "2022-06-12T15:42:00",
+  };
+
+  await api
+    .put(`/api/v1/trips/${selectedTrip.id}`)
+    .send(updateQuery)
+    .expect(200);
+
+  const afterUpdate = await helper.getTrips();
+  const countries = afterUpdate.map((trip) => trip.country);
+  expect(countries).toContain(updateQuery.country);
+});
+
 // DELETE /api/v1/trips/:id
 test("a trip can be deleted", async () => {
   const selectedTrip = (await helper.getTrips())[0];
