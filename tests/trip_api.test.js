@@ -69,12 +69,23 @@ test("a trip without country is not added", async () => {
   expect(response.body).toHaveLength(helper.initialTrips.length);
 });
 
+// DELETE /api/v1/trips/:id
+test("a trip can be deleted", async () => {
+  const selectedTrip = (await helper.getTrips())[0];
+  await api.delete(`/api/v1/trips/${selectedTrip.id}`).expect(200);
+
+  const afterDelete = await helper.getTrips();
+  expect(afterDelete).toHaveLength(helper.initialTrips.length - 1);
+  const countries = afterDelete.map((trip) => trip.country);
+  expect(countries).not.toContainEqual(selectedTrip.country);
+});
+
 // PUT /api/v1/trips/:id
 test("trip can be edited with valid query", async () => {
-  const selectedTrip = (await helper.getTrips())[1];
+  const selectedTrip = (await helper.getTrips())[0];
   const updateQuery = {
-    country: "Libya",
-    startDate: "2022-06-12T15:42:00",
+    country: "Georgia",
+    startDate: "2022-01-12T15:42:00",
   };
 
   await api
@@ -85,17 +96,6 @@ test("trip can be edited with valid query", async () => {
   const afterUpdate = await helper.getTrips();
   const countries = afterUpdate.map((trip) => trip.country);
   expect(countries).toContainEqual(updateQuery.country);
-});
-
-// DELETE /api/v1/trips/:id
-test("a trip can be deleted", async () => {
-  const selectedTrip = (await helper.getTrips())[0];
-  await api.delete(`/api/v1/trips/${selectedTrip.id}`).expect(200);
-
-  const afterDelete = await helper.getTrips();
-  expect(afterDelete).toHaveLength(helper.initialTrips.length - 1);
-  const countries = afterDelete.map((trip) => trip.country);
-  expect(countries).not.toContainEqual(selectedTrip.country);
 });
 
 afterAll(() => {
