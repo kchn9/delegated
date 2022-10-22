@@ -8,7 +8,14 @@ const api = supertest(app);
 
 beforeEach(async () => {
   await Trip.deleteMany({});
-  const tripObjects = helper.initialTrips.map((trip) => new Trip(trip));
+  const user = new User((await helper.initialUsers)[0]);
+  const tripObjects = helper.initialTrips.map(
+    (trip) =>
+      new Trip({
+        ...trip,
+        user: user._id,
+      })
+  );
   const promiseArray = tripObjects.map((trip) => trip.save());
   await Promise.all(promiseArray);
 });
