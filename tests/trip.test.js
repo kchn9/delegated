@@ -7,7 +7,7 @@ const helper = require("./test_helper");
 
 beforeEach(async () => {
   await Trip.deleteMany({});
-  const user = new User((await helper.initialUsers)[0]);
+  const user = new User((await helper.initialUsers())[0]);
   const tripObjects = helper.initialTrips.map(
     (trip) =>
       new Trip({
