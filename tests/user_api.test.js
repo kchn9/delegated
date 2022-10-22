@@ -43,11 +43,7 @@ describe("when there is initially one user in db", () => {
         username: "notOccupiedUsername",
         password: "weak",
       };
-      await api
-        .post("/api/v1/users")
-        .send(user)
-        .expect(400)
-        .expect("Content-Type", /json/);
+      await api.post("/api/v1/users").send(user).expect(400);
 
       const expected = await helper.getUsers();
       expect(beforeCreation).toEqual(expected);
@@ -61,11 +57,7 @@ describe("when there is initially one user in db", () => {
         password: "mySw33t$ecret",
       };
 
-      await api
-        .post("/api/v1/users")
-        .send(user)
-        .expect(400)
-        .expect("Content-Type", /json/);
+      await api.post("/api/v1/users").send(user).expect(400);
 
       const expected = await helper.getUsers();
       expect(beforeCreation).toEqual(expected);
