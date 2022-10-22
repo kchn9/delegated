@@ -13,7 +13,10 @@ const userSchema = new mongoose.Schema({
       return /^[a-zA-Z0-9]{6,36}$/.test(v);
     },
   },
-  passwordHash: String,
+  passwordHash: {
+    type: String,
+    required: true,
+  },
   trips: [
     {
       type: mongoose.SchemaTypes.ObjectId,
