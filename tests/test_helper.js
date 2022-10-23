@@ -35,10 +35,12 @@ const getUsers = async () => {
 };
 
 const generateNonExistingId = async () => {
+  const user = new User((await initialUsers())[0]);
   const trip = new Trip({
     country: "Java",
     startDate: "1970-01-01T00:00:00",
     endDate: "2000-01-01T00:00:00",
+    user: user._id,
   });
 
   await trip.save();
