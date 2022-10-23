@@ -10,14 +10,16 @@ const api = supertest(app);
 beforeEach(async () => {
   await Trip.deleteMany({});
   await User.deleteMany({});
-  const user = await new User((await helper.initialUsers())[0]).save();
-  const tripObjects = helper.initialTrips.map(
-    (trip) =>
-      new Trip({
-        ...trip,
-        user: user._id,
-      })
-  );
+  await helper.initializeUsers();
+  const user = await User.findById((await helper.getUsers())[0].id);
+  const tripObjects = helper.initialTrips.map((trip) => {
+    user.trips.push(trip._id);
+    return new Trip({
+      ...trip,
+      user: user._id,
+    });
+  });
+  await user.save();
   const promiseArray = tripObjects.map((trip) => trip.save());
   await Promise.all(promiseArray);
 });
@@ -65,6 +67,11 @@ describe("viewing a specific trip", () => {
 
 describe("addition of new trip", () => {
   test("succeds with valid data", async () => {
+    const token = await helper.generateToken({
+      username: helper.initialUsers[0].username,
+      password: helper.initialUsers[0].password,
+    });
+
     const newTrip = {
       country: "Moldavia",
       startDate: "2022-05-01T14:22:00",
@@ -74,6 +81,7 @@ describe("addition of new trip", () => {
 
     await api
       .post("/api/v1/trips")
+      .set("Authorization", `Bearer ${token}`)
       .send(newTrip)
       .expect(201)
       .expect("Content-Type", /json/);
@@ -85,14 +93,36 @@ describe("addition of new trip", () => {
     expect(countries).toContainEqual(newTrip.country);
   });
 
-  test("fails with status code 400 if data is invalid", async () => {
+  test("fails with status code 401 if user is not signed in", async () => {
     const newTrip = {
       startDate: "2022-05-01T14:22:00",
       endDate: "2023-01-01T00:01:00",
       userId: (await helper.getUsers())[0].id,
     };
 
-    await api.post("/api/v1/trips").send(newTrip).expect(400);
+    await api.post("/api/v1/trips").send(newTrip).expect(401);
+    const response = await api.get("/api/v1/trips");
+    expect(response.body).toHaveLength(helper.initialTrips.length);
+  });
+
+  test("fails with status code 400 if data is invalid", async () => {
+    const token = await helper.generateToken({
+      username: helper.initialUsers[0].username,
+      password: helper.initialUsers[0].password,
+    });
+
+    const newTrip = {
+      startDate: "2022-05-01T14:22:00",
+      endDate: "2023-01-01T00:01:00",
+      userId: (await helper.getUsers())[0].id,
+    };
+
+    await api
+      .post("/api/v1/trips")
+      .set("Authorization", `Bearer ${token}`)
+      .send(newTrip)
+      .expect(400);
+
     const response = await api.get("/api/v1/trips");
     expect(response.body).toHaveLength(helper.initialTrips.length);
   });
@@ -112,6 +142,29 @@ describe("deletion of trip", () => {
 
 describe("update of trip", () => {
   test("succeds with status code 200 if query is valid", async () => {
+    const token = await helper.generateToken({
+      username: helper.initialUsers[0].username,
+      password: helper.initialUsers[0].password,
+    });
+
+    const selectedTrip = (await helper.getTrips())[0];
+    const updateQuery = {
+      country: "Georgia",
+      startDate: "2022-01-12T15:42:00",
+    };
+
+    await api
+      .put(`/api/v1/trips/${selectedTrip.id}`)
+      .set("Authorization", `Bearer ${token}`)
+      .send(updateQuery)
+      .expect(200);
+
+    const afterUpdate = await helper.getTrips();
+    const countries = afterUpdate.map((trip) => trip.country);
+    expect(countries).toContainEqual(updateQuery.country);
+  });
+
+  test("fails with status code 401 if user is not signed in", async () => {
     const selectedTrip = (await helper.getTrips())[0];
     const updateQuery = {
       country: "Georgia",
@@ -121,11 +174,7 @@ describe("update of trip", () => {
     await api
       .put(`/api/v1/trips/${selectedTrip.id}`)
       .send(updateQuery)
-      .expect(200);
-
-    const afterUpdate = await helper.getTrips();
-    const countries = afterUpdate.map((trip) => trip.country);
-    expect(countries).toContainEqual(updateQuery.country);
+      .expect(401);
   });
 });
 

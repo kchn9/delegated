@@ -26,6 +26,20 @@ const initializeUsers = async () => {
   return Promise.all(promiseArray);
 };
 
+const generateToken = async (credentials) => {
+  const { username, password } = credentials;
+  const user = await User.findOne({ username });
+  const isValid = await bcrypt.compare(password, user.passwordHash);
+  if (user && isValid) {
+    const userForToken = {
+      username: user.username,
+      id: user._id,
+    };
+    return jwt.sign(userForToken, JWT_KEY);
+  }
+  return null;
+};
+
 const initialTrips = [
   {
     country: "Germany",
@@ -50,7 +64,7 @@ const getUsers = async () => {
 };
 
 const generateNonExistingId = async () => {
-  const user = new User((await initialUsers())[0]);
+  const user = new User(initialUsers[0]);
   const trip = new Trip({
     country: "Java",
     startDate: "1970-01-01T00:00:00",
@@ -68,6 +82,7 @@ module.exports = {
   initialTrips,
   initializeUsers,
   initialUsers,
+  generateToken,
   getTrips,
   getUsers,
   generateNonExistingId,
