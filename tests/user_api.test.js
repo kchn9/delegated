@@ -1,8 +1,10 @@
 const helper = require("./test_helper");
 const User = require("../models/user");
+const Trip = require("../models/trip");
 const app = require("../app");
 const mongoose = require("mongoose");
 const supertest = require("supertest");
+const logger = require("../utils/logger");
 
 const api = supertest(app);
 
@@ -16,6 +18,42 @@ describe("when there is initially one user in db", () => {
   test("should return all users as json", async () => {
     await api.get("/api/v1/users").expect(200).expect("Content-Type", /json/);
   });
+
+  test("should return user with trip object", async () => {
+    const user = await User.findById((await helper.getUsers())[0].id);
+    const newTrip = new Trip({
+      country: "Austria",
+      startDate: "2020-01-02T14:11:00",
+      endDate: "2020-04-02T14:11:00",
+      user: user._id,
+    });
+
+    const expectedProperties = [
+      "country",
+      "startDate",
+      "endDate",
+      "title",
+      "daysLength",
+    ];
+    user.trips.push(newTrip._id);
+    await user.save();
+    await newTrip.save();
+
+    const response = await api
+      .get("/api/v1/users")
+      .expect(200)
+      .expect("Content-Type", /json/);
+
+    const [trips] = response.body.map((user) => user.trips);
+
+    for (const trip of trips) {
+      for (const property of expectedProperties) {
+        console.log(trip, property);
+        expect(trip).toHaveProperty(property);
+      }
+    }
+  });
+
   describe("user creation", () => {
     test("succeeds with a fresh username and strong password", async () => {
       const beforeCreation = await helper.getUsers();
