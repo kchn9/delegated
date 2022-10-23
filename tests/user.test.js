@@ -1,14 +1,12 @@
 const app = require("../app");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const User = require("../models/user");
-
 const helper = require("./test_helper");
+const User = require("../models/user");
 
 beforeEach(async () => {
   await User.deleteMany({});
-  const user = new User((await helper.initialUsers())[0]);
-  await user.save();
+  await helper.initializeUsers();
 });
 
 describe("when there is initially one user in db", () => {
@@ -28,7 +26,7 @@ describe("user creation", () => {
     const beforeCreate = await helper.getUsers();
     const newUser = new User({
       username: "songoku",
-      passwordHash: await bcrypt.hash("C0rrectPassword", 10),
+      passwordHash: await bcrypt.hash("aA0!qwer", 10),
     });
     await newUser.save();
     const afterCreate = await helper.getUsers();
@@ -41,7 +39,7 @@ describe("user creation", () => {
     test("should not validate with too short username", async () => {
       const user = new User({
         username: "a",
-        hashedPassword: await bcrypt.hash("C0rrectPassword", 10),
+        hashedPassword: await bcrypt.hash("aA0!qwer", 10),
       });
       await expect(user.validate()).rejects.toThrow(
         mongoose.Error.ValidationError
@@ -50,7 +48,7 @@ describe("user creation", () => {
     test("should not validate with too long username", async () => {
       const user = new User({
         username: "a".repeat(37),
-        hashedPassword: await bcrypt.hash("C0rrectPassword", 10),
+        hashedPassword: await bcrypt.hash("aA0!qwer", 10),
       });
       await expect(user.validate()).rejects.toThrow(
         mongoose.Error.ValidationError
@@ -59,7 +57,7 @@ describe("user creation", () => {
     test("should not validate if username contains special characters", async () => {
       const user = new User({
         username: "u$ername",
-        hashedPassword: await bcrypt.hash("C0rrectPassword", 10),
+        hashedPassword: await bcrypt.hash("aA0!qwer", 10),
       });
       await expect(user.validate()).rejects.toThrow(
         mongoose.Error.ValidationError
@@ -67,8 +65,8 @@ describe("user creation", () => {
     });
     test("should not validate if username is not unique", async () => {
       const user = new User({
-        username: (await helper.getUsers())[0].username,
-        hashedPassword: await bcrypt.hash("C0rrectPassword", 10),
+        username: helper.initialUsers[0].username,
+        hashedPassword: await bcrypt.hash("aA0!qwer", 10),
       });
       await expect(user.validate()).rejects.toThrow(
         mongoose.Error.ValidationError
@@ -76,7 +74,7 @@ describe("user creation", () => {
     });
     test("should not validate if username is not present", async () => {
       const user = new User({
-        hashedPassword: await bcrypt.hash("C0rrectPassword", 10),
+        hashedPassword: await bcrypt.hash("aA0!qwer", 10),
       });
       await expect(user.validate()).rejects.toThrow(
         mongoose.Error.ValidationError
