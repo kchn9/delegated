@@ -1,5 +1,7 @@
 const morgan = require("morgan");
 const logger = require("./logger");
+const jwt = require("jsonwebtoken");
+const { JWT_KEY } = require("../utils/config");
 
 const requestLogger = morgan(function (tokens, req, res) {
   return [
@@ -14,6 +16,14 @@ const requestLogger = morgan(function (tokens, req, res) {
       : `| body: ${JSON.stringify(req.body)}`,
   ].join(" ");
 });
+
+const jwtDecoder = (req, res, next) => {
+  const authorization = req.get("Authorization");
+  if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
+    req.decodedToken = jwt.verify(authorization.substring(7), JWT_KEY);
+  }
+  return next();
+};
 
 const unknownEndpointHandler = (req, res) => {
   return res.sendStatus(404);
@@ -40,6 +50,7 @@ const errorHandler = (error, req, res, next) => {
 
 module.exports = {
   requestLogger,
+  jwtDecoder,
   unknownEndpointHandler,
   errorHandler,
 };

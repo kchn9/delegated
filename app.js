@@ -22,6 +22,7 @@ mongoose
 app.use(cors());
 app.use(express.json());
 app.use(middleware.requestLogger);
+app.use(middleware.jwtDecoder);
 
 app.use("/api/v1/login", loginRouter);
 app.use("/api/v1/users", usersRouter);
