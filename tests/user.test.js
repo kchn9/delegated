@@ -6,7 +6,7 @@ const User = require("../models/user");
 const helper = require("./test_helper");
 
 beforeEach(async () => {
-  await User.deleteMany();
+  await User.deleteMany({});
   const user = new User((await helper.initialUsers())[0]);
   await user.save();
 });

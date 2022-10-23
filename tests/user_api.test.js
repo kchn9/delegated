@@ -7,7 +7,7 @@ const supertest = require("supertest");
 const api = supertest(app);
 
 beforeEach(async () => {
-  await User.deleteMany();
+  await User.deleteMany({});
   const user = new User((await helper.initialUsers())[0]);
   await user.save();
 });
