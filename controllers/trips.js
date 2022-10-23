@@ -1,7 +1,17 @@
 const tripsRouter = require("express").Router();
+const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
+const { JWT_KEY } = require("../utils/config");
 const Trip = require("../models/trip");
 const User = require("../models/user");
+
+const decodeJWT = (request) => {
+  const authorization = request.get("Authorization");
+  if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
+    return jwt.verify(authorization.substring(7), JWT_KEY);
+  }
+  return null;
+};
 
 // GET /api/v1/trips
 tripsRouter.get("/", (req, res, next) => {
@@ -27,6 +37,14 @@ tripsRouter.get("/:id", (req, res, next) => {
 
 // POST /api/v1/trips
 tripsRouter.post("/", (req, res, next) => {
+  const decodedToken = decodeJWT(req);
+
+  if (!decodedToken || !decodedToken.id || !decodedToken.username) {
+    return res.status(401).json({
+      message: "Token invalid",
+    });
+  }
+
   const { country, startDate, endDate, userId } = req.body;
 
   User.findById(userId).then((foundUser) => {
