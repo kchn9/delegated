@@ -1,6 +1,7 @@
 const tripsRouter = require("express").Router();
 const mongoose = require("mongoose");
 const Trip = require("../models/trip");
+const User = require("../models/user");
 
 // GET /api/v1/trips
 tripsRouter.get("/", (req, res, next) => {
@@ -26,21 +27,35 @@ tripsRouter.get("/:id", (req, res, next) => {
 
 // POST /api/v1/trips
 tripsRouter.post("/", (req, res, next) => {
-  const { country, startDate, endDate } = req.body;
-  const newTrip = new Trip({
-    country,
-    startDate,
-    endDate,
-  });
+  const { country, startDate, endDate, userId } = req.body;
 
-  newTrip
-    .save()
-    .then((savedTrip) => {
-      res.status(201).json(savedTrip);
-    })
-    .catch((err) => {
-      next(err);
-    });
+  User.findById(userId).then((foundUser) => {
+    if (foundUser) {
+      const newTrip = new Trip({
+        country,
+        startDate,
+        endDate,
+        user: foundUser._id,
+      });
+
+      foundUser.trips.push(newTrip._id);
+      foundUser
+        .save()
+        .then(() => {
+          newTrip
+            .save()
+            .then((savedTrip) => {
+              res.status(201).json(savedTrip);
+            })
+            .catch((err) => next(err));
+        })
+        .catch((err) => next(err));
+    } else {
+      res.status(400).json({
+        message: "UserId is not correct",
+      });
+    }
+  });
 });
 
 // PUT /api/v1/trips/:id
