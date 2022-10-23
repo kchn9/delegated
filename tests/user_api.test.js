@@ -4,14 +4,12 @@ const Trip = require("../models/trip");
 const app = require("../app");
 const mongoose = require("mongoose");
 const supertest = require("supertest");
-const logger = require("../utils/logger");
 
 const api = supertest(app);
 
 beforeEach(async () => {
   await User.deleteMany({});
-  const user = new User((await helper.initialUsers())[0]);
-  await user.save();
+  await helper.initializeUsers();
 });
 
 describe("when there is initially one user in db", () => {
@@ -48,7 +46,6 @@ describe("when there is initially one user in db", () => {
 
     for (const trip of trips) {
       for (const property of expectedProperties) {
-        console.log(trip, property);
         expect(trip).toHaveProperty(property);
       }
     }
@@ -91,7 +88,7 @@ describe("when there is initially one user in db", () => {
     test("fails with status code 400 when username is already taken", async () => {
       const beforeCreation = await helper.getUsers();
       const user = {
-        username: (await helper.initialUsers())[0].username,
+        username: helper.initialUsers[0].username,
         password: "mySw33t$ecret",
       };
 
