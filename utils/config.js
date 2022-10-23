@@ -7,9 +7,11 @@ const MONGODB_URI =
     ? process.env.TEST_MONGODB_URI
     : process.env.MONGODB_URI;
 const NODE_ENV = process.env.NODE_ENV;
+const SECRET_KEY = process.env.SECRET_KEY;
 
 module.exports = {
   PORT,
   MONGODB_URI,
   NODE_ENV,
+  SECRET_KEY,
 };
