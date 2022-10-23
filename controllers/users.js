@@ -11,6 +11,13 @@ function validatePassword(password) {
 // GET /api/v1/users
 usersRouter.get("/", (req, res, next) => {
   User.find({})
+    .populate("trips", {
+      country: 1,
+      startDate: 1,
+      endDate: 1,
+      title: 1,
+      daysLength: 1,
+    })
     .then((users) => {
       res.json(users);
     })
