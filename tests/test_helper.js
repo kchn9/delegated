@@ -1,14 +1,29 @@
 const Trip = require("../models/trip");
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { JWT_KEY } = require("../utils/config");
 
-const initialUsers = async () => {
-  return [
-    {
-      username: "testuser",
-      passwordHash: await bcrypt.hash("Str0nGP@ssw0rD", 10),
-    },
-  ];
+const initialUsers = [
+  {
+    username: "testuser",
+    password: "$tr0ngPassw0rd",
+  },
+];
+
+const initializeUsers = async () => {
+  const hashUsers = Promise.all(
+    initialUsers.map(async (user) => {
+      return {
+        username: user.username,
+        passwordHash: await bcrypt.hash(user.password, 10),
+      };
+    })
+  );
+  const hashedUsers = await hashUsers;
+  const usersObj = hashedUsers.map((user) => new User(user));
+  const promiseArray = usersObj.map((user) => user.save());
+  return Promise.all(promiseArray);
 };
 
 const initialTrips = [
@@ -51,6 +66,7 @@ const generateNonExistingId = async () => {
 
 module.exports = {
   initialTrips,
+  initializeUsers,
   initialUsers,
   getTrips,
   getUsers,
