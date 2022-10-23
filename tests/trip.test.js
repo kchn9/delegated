@@ -8,14 +8,16 @@ const helper = require("./test_helper");
 beforeEach(async () => {
   await Trip.deleteMany({});
   await User.deleteMany({});
-  const user = await new User((await helper.initialUsers())[0]).save();
-  const tripObjects = helper.initialTrips.map(
-    (trip) =>
-      new Trip({
-        ...trip,
-        user: user._id,
-      })
-  );
+  await helper.initializeUsers();
+  const user = await User.findById((await helper.getUsers())[0].id);
+  const tripObjects = helper.initialTrips.map((trip) => {
+    user.trips.push(trip._id);
+    return new Trip({
+      ...trip,
+      user: user._id,
+    });
+  });
+  await user.save();
   const promiseArray = tripObjects.map((trip) => trip.save());
   await Promise.all(promiseArray);
 });
