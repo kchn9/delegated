@@ -3,12 +3,14 @@ const supertest = require("supertest");
 const helper = require("./test_helper");
 const app = require("../app");
 const Trip = require("../models/trip");
+const User = require("../models/user");
 
 const api = supertest(app);
 
 beforeEach(async () => {
   await Trip.deleteMany({});
-  const user = new User((await helper.initialUsers)[0]);
+  await User.deleteMany({});
+  const user = await new User((await helper.initialUsers())[0]).save();
   const tripObjects = helper.initialTrips.map(
     (trip) =>
       new Trip({
@@ -67,6 +69,7 @@ describe("addition of new trip", () => {
       country: "Moldavia",
       startDate: "2022-05-01T14:22:00",
       endDate: "2023-01-01T00:01:00",
+      userId: (await helper.getUsers())[0].id,
     };
 
     await api
@@ -84,9 +87,9 @@ describe("addition of new trip", () => {
 
   test("fails with status code 400 if data is invalid", async () => {
     const newTrip = {
-      // missing country
       startDate: "2022-05-01T14:22:00",
       endDate: "2023-01-01T00:01:00",
+      userId: (await helper.getUsers())[0].id,
     };
 
     await api.post("/api/v1/trips").send(newTrip).expect(400);
