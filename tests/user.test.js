@@ -1,4 +1,4 @@
-const app = require("../app");
+require("../app");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const helper = require("./test_helper");

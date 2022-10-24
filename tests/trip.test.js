@@ -1,4 +1,4 @@
-const app = require("../app");
+require("../app");
 const mongoose = require("mongoose");
 const Trip = require("../models/trip");
 const User = require("../models/user");
