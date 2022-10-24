@@ -14,12 +14,20 @@ tripsRouter.get("/", (req, res, next) => {
 
 // GET /api/v1/trips/:id
 tripsRouter.get("/:id", (req, res, next) => {
+  if (!req.decodedToken || !req.decodedToken.id || !req.decodedToken.username) {
+    return res.status(401).json({
+      message: "Token invalid",
+    });
+  }
+
   Trip.findById(req.params.id)
     .then((trip) => {
-      if (trip === null) {
-        res.sendStatus(404);
+      if (!trip) {
+        return res.sendStatus(404);
+      } else if (!trip.user.equals(req.decodedToken.id)) {
+        return res.sendStatus(401);
       } else {
-        res.json(trip);
+        return res.json(trip);
       }
     })
     .catch((error) => next(error));
@@ -34,6 +42,10 @@ tripsRouter.post("/", (req, res, next) => {
   }
 
   const { country, startDate, endDate, userId } = req.body;
+
+  if (req.decodedToken.id !== userId) {
+    return res.sendStatus(401);
+  }
 
   User.findById(userId).then((foundUser) => {
     if (foundUser) {
@@ -85,6 +97,10 @@ tripsRouter.put("/:id", (req, res, next) => {
   if (updateQuery.startDate || updateQuery.endDate) {
     Trip.findById(id)
       .then((currentTrip) => {
+        if (!currentTrip.user.equals(req.decodedToken.id)) {
+          return res.sendStatus(401);
+        }
+
         const startDate = updateQuery.startDate
           ? new Date(updateQuery.startDate)
           : currentTrip.startDate;
@@ -127,13 +143,26 @@ tripsRouter.put("/:id", (req, res, next) => {
 
 // DELETE /api/v1/trips/:id
 tripsRouter.delete("/:id", (req, res, next) => {
-  Trip.findByIdAndRemove(req.params.id)
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch((err) => {
-      next(err);
+  if (!req.decodedToken || !req.decodedToken.id || !req.decodedToken.username) {
+    return res.status(401).json({
+      message: "Token invalid",
     });
+  }
+
+  Trip.findById(req.params.id)
+    .then((trip) => {
+      if (!trip.user.equals(req.decodedToken.id)) {
+        return res.sendStatus(401);
+      } else {
+        trip
+          .remove()
+          .then(() => {
+            res.sendStatus(200);
+          })
+          .catch((err) => next(err));
+      }
+    })
+    .catch((err) => next(err));
 });
 
 module.exports = tripsRouter;
