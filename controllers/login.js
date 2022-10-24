@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const { JWT_KEY } = require("../utils/config");
 const User = require("../models/user");
 
-loginRouter.post("/", async (req, res, next) => {
+loginRouter.post("/", async (req, res) => {
   const { username, password } = req.body;
 
   const user = await User.findOne({ username });
