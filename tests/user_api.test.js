@@ -18,7 +18,7 @@ describe("when there is initially one user in db", () => {
   });
 
   test("should return user with trip object", async () => {
-    const user = await User.findById((await helper.getUsers())[0].id);
+    const user = await User.findById(await helper.getUserId(0));
     const newTrip = new Trip({
       country: "Austria",
       startDate: "2020-01-02T14:11:00",

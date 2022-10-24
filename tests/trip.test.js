@@ -9,17 +9,7 @@ beforeEach(async () => {
   await Trip.deleteMany({});
   await User.deleteMany({});
   await helper.initializeUsers();
-  const user = await User.findById((await helper.getUsers())[0].id);
-  const tripObjects = helper.initialTrips.map((trip) => {
-    user.trips.push(trip._id);
-    return new Trip({
-      ...trip,
-      user: user._id,
-    });
-  });
-  await user.save();
-  const promiseArray = tripObjects.map((trip) => trip.save());
-  await Promise.all(promiseArray);
+  await helper.initializeTrips();
 });
 
 describe("when there is initially some trips saved", () => {
@@ -48,7 +38,7 @@ describe("trip creation", () => {
       country: "Belgium",
       startDate: "2021-06-18T06:44:00",
       endDate: "2022-07-21T11:24:00",
-      user: (await helper.getUsers())[0].id,
+      user: await helper.getUserId(0),
     });
     await newTrip.save();
     const afterCreate = await helper.getTrips();
@@ -62,7 +52,7 @@ describe("trip creation", () => {
       const trip = new Trip({
         startDate: "2024-01-02T12:44:00",
         endDate: "2025-10-21T15:18:00",
-        user: (await helper.getUsers())[0].id,
+        user: await helper.getUserId(0),
       });
       await expect(trip.validate()).rejects.toThrow(
         mongoose.Error.ValidationError
@@ -74,7 +64,7 @@ describe("trip creation", () => {
         country: "Sweeden",
         startDate: "2021-01-04T02:13:00",
         endDate: "2020-10-11T13:46:00",
-        user: (await helper.getUsers())[0].id,
+        user: await helper.getUserId(0),
       });
       await expect(trip.validate()).rejects.toThrow(
         mongoose.Error.ValidationError
