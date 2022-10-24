@@ -4,10 +4,15 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { JWT_KEY } = require("../utils/config");
 
+// intialUsers[0] is trip author in test database, initialUsers[1] is another user
 const initialUsers = [
   {
     username: "testuser",
     password: "$tr0ngPassw0rd",
+  },
+  {
+    username: "notowner",
+    password: "#Hacker!2",
   },
 ];
 
@@ -26,18 +31,14 @@ const initializeUsers = async () => {
   return Promise.all(promiseArray);
 };
 
-const generateToken = async (credentials) => {
-  const { username, password } = credentials;
-  const user = await User.findOne({ username });
-  const isValid = await bcrypt.compare(password, user.passwordHash);
-  if (user && isValid) {
-    const userForToken = {
-      username: user.username,
-      id: user._id,
-    };
-    return jwt.sign(userForToken, JWT_KEY);
-  }
-  return null;
+const getUsers = async () => {
+  const users = await User.find({});
+  return users.map((user) => user.toJSON());
+};
+
+const getUserId = async (index) => {
+  const users = await User.find({});
+  return users[index].id;
 };
 
 const initialTrips = [
@@ -53,23 +54,48 @@ const initialTrips = [
   },
 ];
 
+const initializeTrips = async () => {
+  const promiseArray = initialTrips.map(
+    async (trip) =>
+      new Trip({
+        ...trip,
+        user: await getUserId(0),
+      })
+  );
+  const tripObjects = await Promise.all(promiseArray);
+  const saveTrips = tripObjects.map((trip) => trip.save());
+  return Promise.all(saveTrips);
+};
+
 const getTrips = async () => {
   const trips = await Trip.find({});
   return trips.map((trip) => trip.toJSON());
 };
 
-const getUsers = async () => {
-  const users = await User.find({});
-  return users.map((user) => user.toJSON());
+const getTripId = async (index) => {
+  const trips = await Trip.find({});
+  return trips.map((trip) => trip.toJSON())[index].id;
+};
+
+const generateToken = (username, _id) => {
+  const userForToken = {
+    username: username,
+    id: _id,
+  };
+  return jwt.sign(userForToken, JWT_KEY);
+};
+
+const generateAuthorToken = async () => {
+  const authorId = await getUserId(0);
+  return generateToken(initialUsers[0].username, authorId);
 };
 
 const generateNonExistingId = async () => {
-  const user = new User(initialUsers[0]);
   const trip = new Trip({
     country: "Java",
     startDate: "1970-01-01T00:00:00",
     endDate: "2000-01-01T00:00:00",
-    user: user._id,
+    user: await getUserId(0),
   });
 
   await trip.save();
@@ -79,11 +105,15 @@ const generateNonExistingId = async () => {
 };
 
 module.exports = {
-  initialTrips,
-  initializeUsers,
   initialUsers,
-  generateToken,
-  getTrips,
+  initializeUsers,
   getUsers,
+  getUserId,
+  initialTrips,
+  initializeTrips,
+  getTrips,
+  getTripId,
+  generateToken,
+  generateAuthorToken,
   generateNonExistingId,
 };
