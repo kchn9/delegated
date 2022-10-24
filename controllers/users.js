@@ -26,6 +26,37 @@ usersRouter.get("/", (req, res, next) => {
     });
 });
 
+// GET /api/v1/users/:id
+usersRouter.get("/:id", (req, res, next) => {
+  if (!req.decodedToken || !req.decodedToken.id || !req.decodedToken.username) {
+    return res.status(401).json({
+      message: "Token invalid",
+    });
+  }
+
+  const id = req.params.id;
+  User.findById(id)
+    .populate("trips", {
+      country: 1,
+      startDate: 1,
+      endDate: 1,
+      title: 1,
+      daysLength: 1,
+    })
+    .then((user) => {
+      if (!user) {
+        return res.sendStatus(404);
+      } else if (!user._id.equals(req.decodedToken.id)) {
+        return res.sendStatus(401);
+      } else {
+        res.json(user);
+      }
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
+
 // POST /api/v1/users
 usersRouter.post("/", (req, res, next) => {
   const { username, password } = req.body;

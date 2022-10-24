@@ -1,4 +1,5 @@
 const helper = require("./test_helper");
+const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const Trip = require("../models/trip");
 const app = require("../app");
@@ -49,6 +50,58 @@ describe("when there is initially one user in db", () => {
         expect(trip).toHaveProperty(property);
       }
     }
+  });
+
+  describe("viewing user", () => {
+    test("succeeds with valid id", async () => {
+      const token = await helper.generateAuthorToken();
+      const selectedUserId = (await helper.getUserId(0)).toString(); // request for author
+
+      await api
+        .get(`/api/v1/users/${selectedUserId}`)
+        .set("Authorization", `Bearer ${token}`)
+        .expect(200)
+        .expect("Content-Type", /json/);
+    });
+    test("fails with status code 400 if id is invalid", async () => {
+      const token = await helper.generateAuthorToken();
+      const invalidId = "q1321";
+
+      await api
+        .get(`/api/v1/users/${invalidId}`)
+        .set("Authorization", `Bearer ${token}`)
+        .expect(400);
+    });
+    test("fails with status code 401 if user is not signed in", async () => {
+      const selectedUserId = (await helper.getUserId(0)).toString();
+
+      await api
+        .get(`/api/v1/users/${selectedUserId}`)
+        .expect(401)
+        .expect("Content-Type", /json/);
+    });
+    test("fails with status code 401 if user is not requesting for himself", async () => {
+      const anotherUser = new User({
+        username: "anyotheruser",
+        passwordHash: await bcrypt.hash("$tr0nGPa$$worD", 10),
+      });
+      const token = helper.generateToken(anotherUser.username, anotherUser._id);
+      const selectedUserId = (await helper.getUserId(0)).toString(); // request for author
+
+      await api
+        .get(`/api/v1/users/${selectedUserId}`)
+        .set("Authorization", `Bearer ${token}`)
+        .expect(401);
+    });
+    test("fails with status code 404 if user does not exist", async () => {
+      const notExistingId = await helper.generateNonExistingId();
+      const token = await helper.generateAuthorToken();
+
+      await api
+        .get(`/api/v1/users/${notExistingId}`)
+        .set("Authorization", `Bearer ${token}`)
+        .expect(404);
+    });
   });
 
   describe("user creation", () => {
