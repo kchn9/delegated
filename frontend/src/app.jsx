@@ -1,7 +1,21 @@
 import styled from "styled-components";
 import Header from "./components/Header";
+import LandingPage from "./pages/LandingPage/LandingPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import Footer from "./components/Footer";
+
+import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <LandingPage />,
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+]);
 
 const AppWrapper = styled.div`
   min-height: 100vh;
@@ -13,7 +27,7 @@ export default function App() {
   return (
     <AppWrapper>
       <Header />
-      <LoginPage />
+      <RouterProvider router={router} />
       <Footer />
     </AppWrapper>
   );

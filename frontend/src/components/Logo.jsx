@@ -18,5 +18,5 @@ const StyledLogo = styled.img`
 `;
 
 export default function Logo({ src, height, width }) {
-  return <StyledLogo src={src} height={height} width={width} />;
+  return <StyledLogo src={src} alt="Logo" height={height} width={width} />;
 }

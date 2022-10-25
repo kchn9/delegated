@@ -5,6 +5,9 @@ import Button from "./Button";
 import LogoSrc from "../assets/delegated-logo.png";
 
 const HeaderWrapper = styled.header`
+  position: sticky;
+  top: 0;
+  background-color: var(--white);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -15,12 +18,10 @@ const HeaderWrapper = styled.header`
   }
 
   @media only screen and ${breakpoints.laptop} {
-    margin: 0.1em 0;
     padding: 0.1em 8em;
   }
 
   @media only screen and ${breakpoints.desktop} {
-    margin: 0.2em 0;
     padding: 0.2em 15em;
   }
 `;
