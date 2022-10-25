@@ -11,6 +11,19 @@ const FooterContainer = styled.footer`
   letter-spacing: 0.1em;
 `;
 
+const StyledAnchor = styled.a`
+  text-decoration: none;
+  color: var(--primary);
+`;
+
 export default function Footer() {
-  return <FooterContainer>Created with ❤️ by kchn9 ©</FooterContainer>;
+  return (
+    <FooterContainer>
+      Created with ❤️ by
+      <StyledAnchor href="http://github.com/kchn9/delegated">
+        &nbsp;kchn9&nbsp;
+      </StyledAnchor>
+      ©
+    </FooterContainer>
+  );
 }

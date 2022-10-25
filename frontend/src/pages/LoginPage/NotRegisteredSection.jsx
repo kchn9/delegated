@@ -35,13 +35,15 @@ const StyledText = styled.p`
 
 const Highlighted = styled.mark`
   background-color: var(--accent);
+  border: 1px solid transparent;
   padding: 0.25em 0.4em;
   border-radius: 1em;
   text-transform: uppercase;
   cursor: pointer;
+  transition: border ease-in 200ms;
 
   &:hover {
-    outline: 1px solid var(--primary);
+    border: 1px solid var(--primary);
   }
 `;
 
