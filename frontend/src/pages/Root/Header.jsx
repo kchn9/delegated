@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import breakpoints from "../theme/breakpoints";
-import routes from "../utils/providers/router/routes";
+import breakpoints from "../../theme/breakpoints";
+import routes from "../../utils/providers/router/routes";
 import { Link } from "react-router-dom";
-import Logo from "./Logo";
-import Button from "./Button";
-import LogoSrc from "../assets/delegated-logo.png";
+import Logo from "../../components/Logo";
+import Button from "../../components/Button";
+import LogoSrc from "../../assets/delegated-logo.png";
 
 const HeaderWrapper = styled.header`
   position: sticky;

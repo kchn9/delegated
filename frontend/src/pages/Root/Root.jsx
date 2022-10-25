@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import routes from "../../utils/providers/router/routes";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
+import Header from "./Header";
+import Footer from "./Footer";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 const RootWrapper = styled.div`
