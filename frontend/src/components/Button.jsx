@@ -22,8 +22,8 @@ const StyledButton = styled.button`
   }
 
   @media only screen and ${breakpoints.desktop} {
-    padding: 0.8em 2em;
-    font-size: 1.2em;
+    padding: 0.7em 1.8em;
+    font-size: 1.1em;
   }
 
   @media only screen and ${breakpoints.laptop} {

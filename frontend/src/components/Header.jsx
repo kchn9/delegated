@@ -5,18 +5,17 @@ import Button from "./Button";
 import LogoSrc from "../assets/delegated-logo.png";
 
 const HeaderWrapper = styled.header`
-  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   @media only screen and ${breakpoints.desktop} {
-    margin: 0.2em auto 0 auto;
+    margin: 0.2em 0;
     padding: 0.2em 15em;
   }
 
   @media only screen and ${breakpoints.laptop} {
-    margin: 0.1em auto 0 auto;
+    margin: 0.1em 0;
     padding: 0.1em 8em;
   }
 
