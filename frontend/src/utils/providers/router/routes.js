@@ -4,4 +4,6 @@ export default {
   LOGIN_PATH: "/login",
   REGISTER_PATH: "/register",
   DASHBOARD_PATH: "/dashboard",
+  TRIPS_PATH: "/dashboard/trips",
+  MAP_PATH: "/dashboard/map",
 };

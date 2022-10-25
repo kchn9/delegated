@@ -10,12 +10,17 @@ const StyledButton = styled.button`
   font-weight: 500;
   color: ${(props) => props.color || "var(--white)"};
   background-color: ${(props) => props.backgroundColor || "var(--primary)"};
+  border: ${(props) =>
+    props.outlineColor ? `${props.outlineColor} solid 2px` : "none"};
   cursor: pointer;
-  transition: background-color 100ms;
+  transition: background-color 300ms;
   padding: 0.6em 1.2em;
   font-size: 0.8em;
+  box-shadow: 1px 1px 2px var(--grey);
 
   &:hover {
+    color: ${(props) => props.hoverColor || props.color || "var(--white)"};
+
     background-color: ${(props) =>
       props.hoverBackgroundColor || "var(--secondary)"};
   }
@@ -37,16 +42,20 @@ const StyledButton = styled.button`
 `;
 
 export default function Button({
+  outlineColor,
   color,
   backgroundColor,
   hoverBackgroundColor,
+  hoverColor,
   children,
 }) {
   return (
     <StyledButton
+      outlineColor={outlineColor}
       color={color}
       backgroundColor={backgroundColor}
       hoverBackgroundColor={hoverBackgroundColor}
+      hoverColor={hoverColor}
     >
       {children}
     </StyledButton>

@@ -2,6 +2,8 @@ import { createBrowserRouter } from "react-router-dom";
 import routes from "./routes";
 import {
   Root,
+  Trips,
+  Map,
   LandingPage,
   Dashboard,
   RegisterPage,
@@ -20,6 +22,16 @@ export default createBrowserRouter([
       {
         path: routes.DASHBOARD_PATH,
         element: <Dashboard />,
+        children: [
+          {
+            path: routes.TRIPS_PATH,
+            element: <Trips />,
+          },
+          {
+            path: routes.MAP_PATH,
+            element: <Map />,
+          },
+        ],
       },
     ],
   },
