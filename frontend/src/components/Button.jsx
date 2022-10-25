@@ -8,9 +8,12 @@ const StyledButton = styled.button`
   font-size: 1em;
   font-family: inherit;
   font-weight: 500;
+  color: var(--white);
   background-color: var(--primary);
   cursor: pointer;
   transition: background-color 100ms;
+  padding: 0.6em 1.2em;
+  font-size: 0.8em;
 
   &:hover {
     background-color: var(--secondary);
@@ -21,19 +24,14 @@ const StyledButton = styled.button`
     outline: 2px solid var(--accent);
   }
 
-  @media only screen and ${breakpoints.desktop} {
-    padding: 0.7em 1.8em;
-    font-size: 1.1em;
-  }
-
   @media only screen and ${breakpoints.laptop} {
     padding: 0.7em 1.3em;
     font-size: 0.9em;
   }
 
-  @media only screen and ${breakpoints.mobile} {
-    padding: 0.6em 1.2em;
-    font-size: 0.8em;
+  @media only screen and ${breakpoints.desktop} {
+    padding: 0.7em 1.8em;
+    font-size: 1.1em;
   }
 `;
 

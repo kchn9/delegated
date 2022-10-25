@@ -8,35 +8,28 @@ const SectionWrapper = styled.section`
 const SubHeading = styled.h2`
   text-align: center;
   margin: 1em 0;
-
-  @media only screen and ${breakpoints.desktop} {
-    font-size: 1.6rem;
-  }
+  font-size: 1.2rem;
 
   @media only screen and ${breakpoints.tablet} {
     font-size: 1.4rem;
   }
 
-  @media only screen and ${breakpoints.mobile} {
-    font-size: 1.2rem;
+  @media only screen and ${breakpoints.desktop} {
+    font-size: 1.6rem;
   }
 `;
 
 const StyledText = styled.p`
   text-align: center;
   margin: 0.6em 2em;
-  font-size: 1.2em;
-
-  @media only screen and ${breakpoints.desktop} {
-    font-size: 1.4rem;
-  }
+  font-size: 1rem;
 
   @media only screen and ${breakpoints.tablet} {
     font-size: 1.2rem;
   }
 
-  @media only screen and ${breakpoints.mobile} {
-    font-size: 1rem;
+  @media only screen and ${breakpoints.desktop} {
+    font-size: 1.4rem;
   }
 `;
 

@@ -7,17 +7,14 @@ import NotRegisteredSection from "./NotRegisteredSection";
 const Heading = styled.h1`
   text-align: center;
   margin: 1em 0;
-
-  @media only screen and ${breakpoints.desktop} {
-    font-size: 2.4rem;
-  }
+  font-size: 1.5rem;
 
   @media only screen and ${breakpoints.tablet} {
     font-size: 1.9rem;
   }
 
-  @media only screen and ${breakpoints.mobile} {
-    font-size: 1.5rem;
+  @media only screen and ${breakpoints.desktop} {
+    font-size: 2.4rem;
   }
 `;
 

@@ -8,10 +8,10 @@ const HeaderWrapper = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 1.5em;
 
-  @media only screen and ${breakpoints.desktop} {
-    margin: 0.2em 0;
-    padding: 0.2em 15em;
+  @media only screen and ${breakpoints.tablet} {
+    padding: 0 4em;
   }
 
   @media only screen and ${breakpoints.laptop} {
@@ -19,12 +19,9 @@ const HeaderWrapper = styled.header`
     padding: 0.1em 8em;
   }
 
-  @media only screen and ${breakpoints.tablet} {
-    padding: 0 4em;
-  }
-
-  @media only screen and ${breakpoints.mobile} {
-    padding: 0 1.5em;
+  @media only screen and ${breakpoints.desktop} {
+    margin: 0.2em 0;
+    padding: 0.2em 15em;
   }
 `;
 

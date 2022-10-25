@@ -18,15 +18,8 @@ const FieldWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 50%;
-
-  @media only screen and ${breakpoints.desktop} {
-    max-width: 600px;
-  }
-
-  @media only screen and ${breakpoints.mobile} {
-    width: unset;
-    max-width: unset;
-  }
+  max-width: 500px;
+  min-width: 240px;
 `;
 
 const ButtonWrapper = styled.div`
