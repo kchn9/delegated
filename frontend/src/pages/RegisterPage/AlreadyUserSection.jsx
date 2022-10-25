@@ -49,13 +49,13 @@ const Highlighted = styled.mark`
   }
 `;
 
-export default function NotRegisteredSection() {
+export default function AlreadyUserSection() {
   return (
     <SectionWrapper>
-      <SubHeading>Not registered yet?</SubHeading>
+      <SubHeading>Are you a user already?</SubHeading>
       <StyledText>
-        Feel free to sign up&nbsp;
-        <Link style={{ textDecoration: "none" }} to={routes.REGISTER_PATH}>
+        Log in&nbsp;
+        <Link style={{ textDecoration: "none" }} to={routes.LOGIN_PATH}>
           <Highlighted>here</Highlighted>
         </Link>
       </StyledText>

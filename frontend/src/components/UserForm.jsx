@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import breakpoints from "../../theme/breakpoints";
-import Button from "../../components/Button";
-import Input from "../../components/Input";
+import breakpoints from "../theme/breakpoints";
+import Button from "./Button";
+import Input from "./Input";
 import { CiUser, CiLock } from "react-icons/ci";
 
 const FormContainer = styled.form`
@@ -31,7 +31,7 @@ const ButtonWrapper = styled.div`
   max-width: 200px;
 `;
 
-export default function LoginForm() {
+export default function UserForm({ isNew }) {
   return (
     <FormContainer>
       <FieldWrapper>
@@ -53,7 +53,7 @@ export default function LoginForm() {
         />
       </FieldWrapper>
       <ButtonWrapper>
-        <Button type="submit">Log in</Button>
+        <Button type="submit">{isNew ? "Create an account" : "Log in"}</Button>
       </ButtonWrapper>
     </FormContainer>
   );

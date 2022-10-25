@@ -2,7 +2,7 @@ import styled from "styled-components";
 import breakpoints from "../../theme/breakpoints";
 import Divider from "../../components/Divider";
 import UserForm from "../../components/UserForm";
-import NotRegisteredSection from "./NotRegisteredSection";
+import AlreadyUserSection from "./AlreadyUserSection";
 
 const Heading = styled.h1`
   text-align: center;
@@ -18,20 +18,20 @@ const Heading = styled.h1`
   }
 `;
 
-const LoginContainer = styled.main`
+const RegisterContainer = styled.main`
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
 `;
 
-export default function LoginPage() {
+export default function RegisterPage() {
   return (
-    <LoginContainer>
-      <Heading>Log in to your account</Heading>
+    <RegisterContainer>
+      <Heading>Create your account</Heading>
       <Divider my="1em" width="10vw" color="var(--grey)" />
-      <UserForm isNew={false} />
-      <NotRegisteredSection />
-    </LoginContainer>
+      <UserForm isNew={true} />
+      <AlreadyUserSection />
+    </RegisterContainer>
   );
 }

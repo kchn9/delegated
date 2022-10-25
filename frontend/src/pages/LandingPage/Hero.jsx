@@ -112,7 +112,7 @@ export default function Hero() {
             width: "33%",
             textDecoration: "none",
           }}
-          to={routes.LOGIN_PATH}
+          to={routes.REGISTER_PATH}
         >
           <Button
             color="var(--secondary)"
