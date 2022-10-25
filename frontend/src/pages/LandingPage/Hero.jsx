@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import breakpoints from "../../theme/breakpoints";
+import { Link } from "react-router-dom";
+import routes from "../../routes";
 import Button from "../../components/Button";
 import Picture from "../../components/Picture";
 import pictureSrc from "../../assets/amanda-bartel-banner.webp";
@@ -24,13 +26,6 @@ const HeroContainer = styled.section`
   @media only screen and ${breakpoints.desktop} {
     padding: 2em calc(15em + 20px);
   }
-`;
-
-const ButtonWrapper = styled.div`
-  margin: 1em 0;
-  display: flex;
-  flex-direction: column;
-  width: 33%;
 `;
 
 const Group = styled.div`
@@ -109,7 +104,16 @@ export default function Hero() {
       <Group>
         <Heading>Track your business trips</Heading>
         <SubHeading>Don't lose control of your delegations</SubHeading>
-        <ButtonWrapper>
+        <Link
+          style={{
+            margin: "1em 0",
+            display: "flex",
+            flexDirection: "column",
+            width: "33%",
+            textDecoration: "none",
+          }}
+          to={routes.LOGIN_PATH}
+        >
           <Button
             color="var(--secondary)"
             hoverBackgroundColor="var(--primary)"
@@ -117,7 +121,7 @@ export default function Hero() {
           >
             Join now
           </Button>
-        </ButtonWrapper>
+        </Link>
       </Group>
       <PictureWrapper>
         <Picture

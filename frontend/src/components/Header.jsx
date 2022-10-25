@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import breakpoints from "../theme/breakpoints";
+import routes from "../routes";
+import { Link } from "react-router-dom";
 import Logo from "./Logo";
 import Button from "./Button";
 import LogoSrc from "../assets/delegated-logo.png";
@@ -29,8 +31,12 @@ const HeaderWrapper = styled.header`
 export default function Header() {
   return (
     <HeaderWrapper>
-      <Logo src={LogoSrc} height="60px" width="140px" />
-      <Button>Sign in</Button>
+      <Link to={routes.HOME_PATH}>
+        <Logo src={LogoSrc} height="60px" width="140px" />
+      </Link>
+      <Link to={routes.LOGIN_PATH}>
+        <Button>Sign in</Button>
+      </Link>
     </HeaderWrapper>
   );
 }

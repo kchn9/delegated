@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import breakpoints from "../../theme/breakpoints";
+import Header from "../../components/Header";
 import Hero from "./Hero";
 
 const LandingContainer = styled.main`
@@ -9,8 +10,11 @@ const LandingContainer = styled.main`
 
 export default function LandingPage() {
   return (
-    <LandingContainer>
-      <Hero />
-    </LandingContainer>
+    <>
+      <Header />
+      <LandingContainer>
+        <Hero />
+      </LandingContainer>
+    </>
   );
 }

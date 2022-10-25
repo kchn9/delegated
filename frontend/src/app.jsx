@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Header from "./components/Header";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import Footer from "./components/Footer";
@@ -26,7 +25,6 @@ const AppWrapper = styled.div`
 export default function App() {
   return (
     <AppWrapper>
-      <Header />
       <RouterProvider router={router} />
       <Footer />
     </AppWrapper>
