@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import breakpoints from "../../theme/breakpoints";
 import { Link } from "react-router-dom";
-import routes from "../../routes";
+import routes from "../../utils/providers/router/routes";
 import Button from "../../components/Button";
 import Picture from "../../components/Picture";
 import pictureSrc from "../../assets/amanda-bartel-banner.webp";

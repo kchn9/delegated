@@ -19,7 +19,7 @@ const Heading = styled.h1`
 `;
 
 const LoginContainer = styled.main`
-  flex: 1;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;

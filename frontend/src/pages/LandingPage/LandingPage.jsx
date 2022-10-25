@@ -10,11 +10,8 @@ const LandingContainer = styled.main`
 
 export default function LandingPage() {
   return (
-    <>
-      <Header />
-      <LandingContainer>
-        <Hero />
-      </LandingContainer>
-    </>
+    <LandingContainer>
+      <Hero />
+    </LandingContainer>
   );
 }

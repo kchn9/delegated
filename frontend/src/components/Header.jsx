@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import breakpoints from "../theme/breakpoints";
-import routes from "../routes";
+import routes from "../utils/providers/router/routes";
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
 import Button from "./Button";
