@@ -1,7 +1,8 @@
 import styled from "styled-components";
+import routes from "../../utils/providers/router/routes.js";
 import breakpoints from "../../theme/breakpoints";
 import Sidebar from "./Sidebar";
-import { Outlet } from "react-router-dom";
+import { useLocation, Navigate, Outlet } from "react-router-dom";
 
 const DashboardContainer = styled.div`
   flex: 1;
@@ -33,6 +34,15 @@ const ContentWrapper = styled.main`
 `;
 
 export default function Dashboard() {
+  const { pathname } = useLocation();
+
+  if (
+    pathname === routes.DASHBOARD_PATH ||
+    pathname === routes.DASHBOARD_PATH + "/"
+  ) {
+    return <Navigate to={routes.TRIPS_PATH} />;
+  }
+
   return (
     <DashboardContainer>
       <SidebarWrapper>

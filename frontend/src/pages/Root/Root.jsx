@@ -18,7 +18,7 @@ export default function Root() {
 
   return (
     <RootWrapper>
-      <Header />
+      <Header opacityMode={pathname === routes.HOME_PATH} />
       <Outlet />
       <Footer />
     </RootWrapper>

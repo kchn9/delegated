@@ -7,35 +7,39 @@ import Button from "../../components/Button";
 import LogoSrc from "../../assets/delegated-logo.png";
 
 const HeaderWrapper = styled.header`
-  position: sticky;
-  top: 0;
-  background-color: var(--white);
+  position: ${(props) => (props.opacityMode ? "absolute" : "sticky")};
+  right: ${(props) => (props.opacityMode ? "0" : "unset")};
+  left: ${(props) => (props.opacityMode ? "0" : "unset")};
+  background-color: ${(props) =>
+    props.opacityMode ? "rgba(255, 255, 255, 0.86)" : "var(--white)"};
+
   display: flex;
+  top: 0;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1.5em;
+  padding: 0.2em 1.5em;
 
   @media only screen and ${breakpoints.tablet} {
-    padding: 0 4em;
+    padding: 0.3em 4em;
   }
 
   @media only screen and ${breakpoints.laptop} {
-    padding: 0.1em 8em;
+    padding: 0.3em 8em;
   }
 
   @media only screen and ${breakpoints.desktop} {
-    padding: 0.2em 15em;
+    padding: 0.4em 15em;
   }
 `;
 
-export default function Header() {
+export default function Header({ opacityMode }) {
   return (
-    <HeaderWrapper>
+    <HeaderWrapper opacityMode={opacityMode}>
       <Link to={routes.HOME_PATH}>
         <Logo src={LogoSrc} height="60px" width="140px" />
       </Link>
       <Link to={routes.LOGIN_PATH}>
-        <Button>Sign in</Button>
+        <Button backgroundColor={"var(--secondary)"}>Sign in</Button>
       </Link>
     </HeaderWrapper>
   );

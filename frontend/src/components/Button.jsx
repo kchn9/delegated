@@ -15,8 +15,7 @@ const StyledButton = styled.button`
   cursor: pointer;
   transition: background-color 300ms;
   padding: 0.6em 1.2em;
-  font-size: 0.8em;
-  box-shadow: 1px 1px 2px var(--grey);
+  font-size: clamp(12px, 1.1vw, 18px);
 
   &:hover {
     color: ${(props) => props.hoverColor || props.color || "var(--white)"};
