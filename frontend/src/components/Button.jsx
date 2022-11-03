@@ -2,6 +2,9 @@ import styled from "styled-components";
 import breakpoints from "../theme/breakpoints";
 
 const StyledButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 0.5em;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;

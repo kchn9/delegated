@@ -1,8 +1,11 @@
 import styled from "styled-components";
-import breakpoints from "../theme/breakpoints";
+
 import Button from "./Button";
 import Input from "./Input";
+import Icon from "./Icon";
+
 import { CiUser, CiLock } from "react-icons/ci";
+import LoginIcon from "../assets/icons/login.svg";
 
 const FormContainer = styled.form`
   display: flex;
@@ -53,7 +56,10 @@ export default function UserForm({ isNew }) {
         />
       </FieldWrapper>
       <ButtonWrapper>
-        <Button type="submit">{isNew ? "Create an account" : "Log in"}</Button>
+        <Button type="submit">
+          {!isNew && <Icon height="20px" width="24px" src={LoginIcon} />}
+          {isNew ? "Create an account" : "Log in"}
+        </Button>
       </ButtonWrapper>
     </FormContainer>
   );
