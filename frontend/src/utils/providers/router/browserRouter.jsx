@@ -3,6 +3,7 @@ import routes from "./routes";
 import {
   Root,
   Trips,
+  TripView,
   Map,
   LandingPage,
   Dashboard,
@@ -26,6 +27,10 @@ export default createBrowserRouter([
           {
             path: routes.TRIPS_PATH,
             element: <Trips />,
+          },
+          {
+            path: routes.TRIP_PATH,
+            element: <TripView />,
           },
           {
             path: routes.MAP_PATH,

@@ -41,7 +41,6 @@ const NavigationContainer = styled.nav`
   display: flex;
   flex-direction: column;
   margin: 0 2em 1.6em 0;
-  border-bottom: 1px solid var(--grey);
 
   & > a {
     margin-bottom: 0.8em;
