@@ -1,13 +1,11 @@
 import styled from "styled-components";
-
 import routes from "../../utils/providers/router/routes";
 import breakpoints from "../../theme/breakpoints";
 
-import pictureSrc from "../../assets/amanda-bartel-banner.webp";
-
 import { Link } from "react-router-dom";
 import Button from "../../components/Button";
-import Picture from "../../components/Picture";
+
+import pictureSrc from "../../assets/amanda-bartel-banner.webp";
 
 const HeroContainer = styled.section`
   display: flex;
@@ -116,7 +114,13 @@ export default function Hero() {
             width: "33%",
           }}
         >
-          <Button backgroundColor={"var(--accent)"}>Join</Button>
+          <Button
+            color="var(--white)"
+            backgroundColor="var(--secondary)"
+            hoverBackgroundColor="var(--primary)"
+          >
+            Join
+          </Button>
         </Link>
       </Banner>
     </HeroContainer>

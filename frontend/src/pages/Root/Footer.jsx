@@ -13,7 +13,7 @@ const FooterContainer = styled.footer`
 
 const StyledAnchor = styled.a`
   text-decoration: none;
-  color: var(--primary);
+  color: inherit;
 `;
 
 export default function Footer() {

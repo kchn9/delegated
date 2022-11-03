@@ -2,7 +2,7 @@ import styled from "styled-components";
 import breakpoints from "../../theme/breakpoints";
 import routes from "../../utils/providers/router/routes";
 import Button from "../../components/Button";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const SidebarContainer = styled.aside`
   display: flex;
@@ -26,15 +26,8 @@ const UsernameText = styled.span`
 `;
 
 const ActionsContainer = styled.div`
-  margin-top: 1.6em;
-  display: flex;
-  flex-direction: column;
   border-bottom: 1px solid var(--grey);
   margin: 1.6em 2em 1.6em 0;
-
-  & > button:last-child {
-    margin-bottom: 1.6em;
-  }
 `;
 
 const NavigationContainer = styled.nav`
@@ -58,13 +51,23 @@ export default function Sidebar() {
         <UsernameText>user.username</UsernameText>
       </GreetingsContainer>
       <ActionsContainer>
-        <Button
-          backgroundColor="var(--accent)"
-          color="var(--black)"
-          hoverBackgroundColor="none"
+        <Link
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            textDecoration: "none",
+            marginBottom: "1.6em",
+          }}
+          to={routes.NEW_TRIP_PATH}
         >
-          Add a trip
-        </Button>
+          <Button
+            backgroundColor="var(--accent)"
+            color="var(--black)"
+            hoverBackgroundColor="none"
+          >
+            Add a trip
+          </Button>
+        </Link>
       </ActionsContainer>
       <NavigationContainer>
         <NavLink

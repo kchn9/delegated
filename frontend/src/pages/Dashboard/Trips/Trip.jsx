@@ -3,6 +3,7 @@ import Flag from "react-world-flags";
 import lookup from "country-code-lookup";
 import { Link } from "react-router-dom";
 import routes from "../../../utils/providers/router/routes";
+import daysFormatter from "../../../utils/daysFormatter";
 
 const FlagFallback = styled.div`
   display: inline-block;
@@ -27,20 +28,6 @@ const TripContainer = styled.div`
   }
 `;
 
-const CountrySpan = styled.span`
-  color: var(--white);
-  font-weight: 600;
-`;
-
-const TimeParagraph = styled.p`
-  color: var(--white);
-`;
-
-const DateSpan = styled.span`
-  color: var(--grey);
-  font-weight: 600;
-`;
-
 const LenghtParagraph = styled.p`
   color: var(--white);
 `;
@@ -57,15 +44,7 @@ const CreatedParagraph = styled.p`
   color: var(--grey);
 `;
 
-export default function Trip({
-  country,
-  startDate,
-  endDate,
-  created,
-  title,
-  daysLength,
-  id,
-}) {
+export default function Trip({ country, created, title, daysLength, id }) {
   return (
     <TripContainer>
       <Link
@@ -88,13 +67,10 @@ export default function Trip({
 
         <LenghtParagraph>
           You spent there&nbsp;
-          {daysLength.toLocaleString("es-US", {
-            maximumFractionDigits: 2,
-          })}
-          &nbsp;days
+          {daysFormatter.formatDaysLength(daysLength)}
         </LenghtParagraph>
         <CreatedParagraph>
-          Created at {new Date(created).toLocaleDateString()}
+          Created on {new Date(created).toLocaleDateString()}
         </CreatedParagraph>
       </Link>
     </TripContainer>

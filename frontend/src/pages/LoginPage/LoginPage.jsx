@@ -3,6 +3,12 @@ import breakpoints from "../../theme/breakpoints";
 import Divider from "../../components/Divider";
 import UserForm from "../../components/UserForm";
 import NotRegisteredSection from "./NotRegisteredSection";
+import { Link } from "react-router-dom";
+import routes from "../../utils/providers/router/routes";
+import Button from "../../components/Button";
+import Icon from "../../components/Icon";
+
+import HomeIcon from "../../assets/icons/home.svg";
 
 const Heading = styled.h1`
   text-align: center;
@@ -32,6 +38,22 @@ export default function LoginPage() {
       <Divider my="1em" width="10vw" color="var(--grey)" />
       <UserForm isNew={false} />
       <NotRegisteredSection />
+      <Link
+        to={routes.HOME_PATH}
+        style={{
+          textDecoration: "none",
+          width: "10%",
+          minWidth: "fit-content",
+          margin: "0 auto",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <Button backgroundColor="var(--secondary)">
+          <Icon height="24px" width="24px" src={HomeIcon} />
+          Home
+        </Button>
+      </Link>
     </LoginContainer>
   );
 }
