@@ -78,7 +78,8 @@ usersRouter.post("/", (req, res, next) => {
       .catch((err) => next(err));
   } else {
     res.status(400).json({
-      message: "User password validation failed.",
+      message:
+        "User password has to fulfill follwing conditions:\n8 char long or longer,\nat least 1 lower case,\nat least 1 capital,\nat least 1 digit,\nat least 1 special character.",
     });
   }
 });
