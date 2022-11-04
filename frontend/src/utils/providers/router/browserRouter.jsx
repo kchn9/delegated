@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import routes from "./routes";
+import ProtectedRoute from "../../../components/ProtectedRoute";
 import {
   Root,
   Trips,
@@ -23,7 +24,11 @@ export default createBrowserRouter([
       },
       {
         path: routes.DASHBOARD_PATH,
-        element: <Dashboard />,
+        element: (
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        ),
         children: [
           {
             path: routes.TRIPS_PATH,

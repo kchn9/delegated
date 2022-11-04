@@ -1,13 +1,16 @@
 import styled from "styled-components";
 import breakpoints from "../../theme/breakpoints";
 import routes from "../../utils/providers/router/routes";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Icon from "../../components/Icon";
 import Logo from "../../components/Logo";
 import Button from "../../components/Button";
 
 import LogoSrc from "../../assets/delegated-logo.png";
 import LoginIcon from "../../assets/icons/login.svg";
+import LogoutIcon from "../../assets/icons/logout.svg";
+
+import { useState } from "react";
 
 const HeaderWrapper = styled.header`
   position: ${(props) => (props.opacityMode ? "absolute" : "sticky")};
@@ -35,18 +38,49 @@ const HeaderWrapper = styled.header`
   }
 `;
 
+function SignInButton() {
+  return (
+    <Link to={routes.LOGIN_PATH} style={{ textDecoration: "none" }}>
+      <Button backgroundColor={"var(--secondary)"}>
+        <Icon src={LoginIcon} height="20px" width="24px"></Icon>
+        Sign in
+      </Button>
+    </Link>
+  );
+}
+
+function handleLogout(setToken, navigate) {
+  localStorage.removeItem("jwt");
+  setToken("");
+  navigate(routes.HOME_PATH);
+}
+
+function LogoutButton({ setToken, navigate }) {
+  return (
+    <Button
+      onClick={() => handleLogout(setToken, navigate)}
+      backgroundColor={"var(--secondary)"}
+    >
+      <Icon src={LogoutIcon} height="20px" width="24px"></Icon>
+      Logout
+    </Button>
+  );
+}
+
 export default function Header({ opacityMode }) {
+  const [token, setToken] = useState(localStorage.getItem("jwt") || "");
+  const navigate = useNavigate();
+
   return (
     <HeaderWrapper opacityMode={opacityMode}>
       <Link to={routes.HOME_PATH}>
         <Logo src={LogoSrc} height="60px" width="140px" />
       </Link>
-      <Link to={routes.LOGIN_PATH} style={{ textDecoration: "none" }}>
-        <Button backgroundColor={"var(--secondary)"}>
-          <Icon src={LoginIcon} height="20px" width="24px"></Icon>
-          Sign in
-        </Button>
-      </Link>
+      {token ? (
+        <LogoutButton setToken={setToken} navigate={navigate} />
+      ) : (
+        <SignInButton />
+      )}
     </HeaderWrapper>
   );
 }
