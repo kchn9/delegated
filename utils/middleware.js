@@ -37,7 +37,9 @@ const errorHandler = (error, req, res, next) => {
     error.name === "ValidatorError" ||
     error.name === "CastError"
   ) {
-    return res.sendStatus(400);
+    return res.status(400).json({
+      message: error.message,
+    });
   }
   if (error.name === "JsonWebTokenError") {
     return res.status(401).json({
