@@ -3,10 +3,11 @@ import breakpoints from "../../theme/breakpoints";
 import Divider from "../../components/Divider";
 import UserForm from "../../components/UserForm";
 import NotRegisteredSection from "./NotRegisteredSection";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import routes from "../../utils/providers/router/routes";
 import Button from "../../components/Button";
 import Icon from "../../components/Icon";
+import userHelper from "../../utils/userHelper";
 
 import HomeIcon from "../../assets/icons/home.svg";
 
@@ -32,28 +33,32 @@ const LoginContainer = styled.main`
 `;
 
 export default function LoginPage() {
-  return (
-    <LoginContainer>
-      <Heading>Log in to your account</Heading>
-      <Divider my="1em" width="10vw" color="var(--grey)" />
-      <UserForm isNew={false} />
-      <NotRegisteredSection />
-      <Link
-        to={routes.HOME_PATH}
-        style={{
-          textDecoration: "none",
-          width: "10%",
-          minWidth: "fit-content",
-          margin: "0 auto",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <Button backgroundColor="var(--secondary)">
-          <Icon height="24px" width="24px" src={HomeIcon} />
-          Home
-        </Button>
-      </Link>
-    </LoginContainer>
-  );
+  if (userHelper.hasToken()) {
+    return <Navigate to={routes.DASHBOARD_PATH} />;
+  } else {
+    return (
+      <LoginContainer>
+        <Heading>Log in to your account</Heading>
+        <Divider my="1em" width="10vw" color="var(--grey)" />
+        <UserForm isNew={false} />
+        <NotRegisteredSection />
+        <Link
+          to={routes.HOME_PATH}
+          style={{
+            textDecoration: "none",
+            width: "10%",
+            minWidth: "fit-content",
+            margin: "0 auto",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Button backgroundColor="var(--secondary)">
+            <Icon height="24px" width="24px" src={HomeIcon} />
+            Home
+          </Button>
+        </Link>
+      </LoginContainer>
+    );
+  }
 }
