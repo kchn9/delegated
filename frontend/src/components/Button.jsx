@@ -50,6 +50,7 @@ export default function Button({
   hoverBackgroundColor,
   hoverColor,
   children,
+  onClick,
 }) {
   return (
     <StyledButton
@@ -58,6 +59,7 @@ export default function Button({
       backgroundColor={backgroundColor}
       hoverBackgroundColor={hoverBackgroundColor}
       hoverColor={hoverColor}
+      onClick={onClick}
     >
       {children}
     </StyledButton>

@@ -72,13 +72,33 @@ const StyledIcon = styled.i`
   }
 `;
 
-export default function Input({ type, id, labelText, placeholder, icon }) {
+export default function Input({
+  value,
+  onChange,
+  type,
+  id,
+  labelText,
+  placeholder,
+  icon,
+  autoComplete,
+  required,
+  minLength,
+}) {
   return (
     <InputContainer>
       <StyledLabel>{labelText}</StyledLabel>
       <InputWrapper>
         <StyledIcon>{icon}</StyledIcon>
-        <StyledInput type={type} id={id} placeholder={placeholder} />
+        <StyledInput
+          value={value}
+          onChange={onChange}
+          type={type}
+          id={id}
+          placeholder={placeholder}
+          autoComplete={autoComplete}
+          required={required}
+          minLength={minLength}
+        />
       </InputWrapper>
     </InputContainer>
   );
