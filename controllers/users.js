@@ -17,6 +17,7 @@ usersRouter.get("/", (req, res, next) => {
       endDate: 1,
       title: 1,
       daysLength: 1,
+      created: 1,
     })
     .then((users) => {
       res.json(users);
@@ -42,6 +43,7 @@ usersRouter.get("/:id", (req, res, next) => {
       endDate: 1,
       title: 1,
       daysLength: 1,
+      created: 1,
     })
     .then((user) => {
       if (!user) {
