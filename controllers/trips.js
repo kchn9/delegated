@@ -54,6 +54,7 @@ tripsRouter.post("/", (req, res, next) => {
         startDate,
         endDate,
         user: foundUser._id,
+        created: Date.now(),
       });
 
       foundUser.trips.push(newTrip._id);

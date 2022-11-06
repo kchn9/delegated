@@ -19,6 +19,7 @@ usersRouter.get("/", (req, res, next) => {
         endDate: 1,
         title: 1,
         daysLength: 1,
+        created: 1,
       },
       null,
       {
