@@ -11,14 +11,22 @@ function validatePassword(password) {
 // GET /api/v1/users
 usersRouter.get("/", (req, res, next) => {
   User.find({})
-    .populate("trips", {
-      country: 1,
-      startDate: 1,
-      endDate: 1,
-      title: 1,
-      daysLength: 1,
-      created: 1,
-    })
+    .populate(
+      "trips",
+      {
+        country: 1,
+        startDate: 1,
+        endDate: 1,
+        title: 1,
+        daysLength: 1,
+      },
+      null,
+      {
+        sort: {
+          created: "desc",
+        },
+      }
+    )
     .then((users) => {
       res.json(users);
     })
@@ -37,14 +45,23 @@ usersRouter.get("/:id", (req, res, next) => {
 
   const id = req.params.id;
   User.findById(id)
-    .populate("trips", {
-      country: 1,
-      startDate: 1,
-      endDate: 1,
-      title: 1,
-      daysLength: 1,
-      created: 1,
-    })
+    .populate(
+      "trips",
+      {
+        country: 1,
+        startDate: 1,
+        endDate: 1,
+        title: 1,
+        daysLength: 1,
+        created: 1,
+      },
+      null,
+      {
+        sort: {
+          created: "desc",
+        },
+      }
+    )
     .then((user) => {
       if (!user) {
         return res.sendStatus(404);
