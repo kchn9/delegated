@@ -1,11 +1,12 @@
 import styled from "styled-components";
-import routes from "../../utils/providers/router/routes.js";
 import breakpoints from "../../theme/breakpoints";
 import Sidebar from "./Sidebar";
+
 import { useLocation, Navigate, Outlet } from "react-router-dom";
+import routes from "../../utils/providers/router/routes.js";
 
 const DashboardContainer = styled.div`
-  flex: 1;
+  flex: 1 0 100vh;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 2em;
@@ -24,7 +25,7 @@ const DashboardContainer = styled.div`
   }
 `;
 
-const SidebarWrapper = styled.div`
+const SidebarWrapper = styled.aside`
   grid-column: 1 / span 4;
   padding: 2em 0;
 `;
