@@ -1,10 +1,4 @@
 import styled from "styled-components";
-
-import lookup from "country-code-lookup";
-import daysFormatter from "../../../utils/daysFormatter";
-import routes from "../../../utils/providers/router/routes";
-
-import { Link } from "react-router-dom";
 import Button from "../../../components/Button";
 import Icon from "../../../components/Icon";
 import Flag from "react-world-flags";
@@ -13,6 +7,13 @@ import CalendarIcon from "../../../assets/icons/calendar-date.svg";
 import TimeIcon from "../../../assets/icons/time.svg";
 import LocationIcon from "../../../assets/icons/location.svg";
 import BackIcon from "../../../assets/icons/arrow-left.svg";
+
+import daysFormatter from "../../../utils/daysFormatter";
+import { iso2 } from "../../../utils/countries";
+import { getDiemRate } from "../../../utils/diemRates";
+
+import { Link, useLoaderData } from "react-router-dom";
+import routes from "../../../utils/providers/router/routes";
 
 const ViewContainer = styled.div`
   display: flex;
@@ -50,6 +51,7 @@ const LocationParagraph = styled.h5`
 `;
 
 const FlexParagraph = styled.p`
+  width: 100%;
   display: flex;
   align-items: center;
   margin: 0.4em 0;
@@ -93,7 +95,7 @@ const CreatedParagraph = styled.p`
 
 const DateWrapper = styled.div`
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-items: center;
   flex-direction: column;
 `;
@@ -102,26 +104,25 @@ const DatesContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1em 2em;
+  padding: 1em 2.1em;
   background-color: var(--l-grey);
   border-radius: 0.5em;
 `;
 
 export default function TripView() {
-  const response = {
-    daysLength: 29.97777222,
-  };
+  const trip = useLoaderData();
 
   return (
     <ViewContainer>
-      <Title>{response.title}</Title>
+      <Title>{trip?.title}</Title>
       <SubTitle>Details:</SubTitle>
       <LocationParagraph>
         <Icon src={LocationIcon} height="24px" width="24px" />
         Where? &nbsp;
+        <div style={{ flex: 1 }}></div>
         <HightlightSpan>
           <Flag
-            code={lookup.byCountry(response.country)?.iso3}
+            code={iso2(trip?.country)}
             fallback={<FlagFallback></FlagFallback>}
             height="16"
             style={{
@@ -130,7 +131,7 @@ export default function TripView() {
               top: "3px",
             }}
           />
-          {response.country}
+          {trip?.country}
         </HightlightSpan>
       </LocationParagraph>
       <SubTitle>Trip:</SubTitle>
@@ -140,14 +141,14 @@ export default function TripView() {
             <Icon src={CalendarIcon} height="24px" width="24px" />
             Started on&nbsp;
             <HightlightSpan>
-              {new Date(response.startDate).toLocaleDateString()}
+              {new Date(trip?.startDate).toLocaleDateString()}
             </HightlightSpan>
           </FlexParagraph>
           <FlexParagraph>
             <Icon src={TimeIcon} height="24px" width="24px" />
             at&nbsp;
             <HightlightSpan>
-              {new Date(response.startDate).toLocaleTimeString([], {
+              {new Date(trip?.startDate).toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
               })}
@@ -157,7 +158,7 @@ export default function TripView() {
 
         <LenghtParagraph>
           <LengthSpan>
-            {daysFormatter.formatDaysLength(response.daysLength)}
+            {daysFormatter.formatDaysLength(trip?.daysLength)}
           </LengthSpan>
         </LenghtParagraph>
 
@@ -166,14 +167,14 @@ export default function TripView() {
             <Icon src={CalendarIcon} height="24px" width="24px" />
             Finished on&nbsp;
             <HightlightSpan>
-              {new Date(response.endDate).toLocaleDateString()}
+              {new Date(trip?.endDate).toLocaleDateString()}
             </HightlightSpan>
           </FlexParagraph>
           <FlexParagraph>
             <Icon src={TimeIcon} height="24px" width="24px" />
             at&nbsp;
             <HightlightSpan>
-              {new Date(response.endDate).toLocaleTimeString([], {
+              {new Date(trip?.endDate).toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
               })}
@@ -182,11 +183,12 @@ export default function TripView() {
         </DateWrapper>
       </DatesContainer>
       <SubTitle>Per diem:</SubTitle>
-      coming soon
-      <SubTitle>Expences:</SubTitle>
-      coming soon
+      {Number(getDiemRate(iso2(trip?.country)).amount) *
+        Number(daysFormatter.calculateDiemBasis(trip?.daysLength))}
+      {getDiemRate(iso2(trip?.country)).currency}
+
       <Link
-        to={routes.DASHBOARD_PATH}
+        to={routes.TRIPS_PATH}
         style={{
           marginTop: "2em",
           textDecoration: "none",
@@ -202,7 +204,7 @@ export default function TripView() {
         </Button>
       </Link>
       <CreatedParagraph>
-        Created on {new Date(response.created).toLocaleDateString()}
+        Created on {new Date(trip?.created).toLocaleDateString()}
       </CreatedParagraph>
     </ViewContainer>
   );

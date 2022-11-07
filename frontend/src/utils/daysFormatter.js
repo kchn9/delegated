@@ -5,9 +5,9 @@ export default {
     const hours = Math.floor(24 * (daysNumber % 1));
 
     if (fullDays === 0 && hours > 1) {
-      return `$${hours} hours`;
+      return `${hours} hours`;
     } else if (fullDays === 0 && hours === 1) {
-      return `$${hours} hour`;
+      return `${hours} hour`;
     }
 
     if (hours === 0 && fullDays > 1) {
