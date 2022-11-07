@@ -1,10 +1,12 @@
 import styled from "styled-components";
-import breakpoints from "../../theme/breakpoints";
-import routes from "../../utils/providers/router/routes";
 import Button from "../../components/Button";
 import { Link, NavLink } from "react-router-dom";
+import routes from "../../utils/providers/router/routes";
 
-const SidebarContainer = styled.aside`
+import { useContext } from "react";
+import { AuthContext } from "../../utils/providers/auth/authContext";
+
+const SidebarContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 80vh;
@@ -23,6 +25,7 @@ const WelcomeText = styled.span`
 
 const UsernameText = styled.span`
   margin: 0.4em 0;
+  color: var(--primary);
 `;
 
 const ActionsContainer = styled.div`
@@ -44,11 +47,13 @@ const NavigationContainer = styled.nav`
 `;
 
 export default function Sidebar() {
+  const [authState, _] = useContext(AuthContext);
+
   return (
     <SidebarContainer>
       <GreetingsContainer>
         <WelcomeText>Welcome back!</WelcomeText>
-        <UsernameText>user.username</UsernameText>
+        <UsernameText>Logged as {authState.username}</UsernameText>
       </GreetingsContainer>
       <ActionsContainer>
         <Link

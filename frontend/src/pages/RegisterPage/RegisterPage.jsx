@@ -7,9 +7,10 @@ import { Link, Navigate } from "react-router-dom";
 import routes from "../../utils/providers/router/routes";
 import Button from "../../components/Button";
 import Icon from "../../components/Icon";
-import userHelper from "../../utils/userHelper";
 
 import HomeIcon from "../../assets/icons/home.svg";
+import { useContext } from "react";
+import { AuthContext } from "../../utils/providers/auth/authContext";
 
 const Heading = styled.h1`
   text-align: center;
@@ -33,7 +34,8 @@ const RegisterContainer = styled.main`
 `;
 
 export default function RegisterPage() {
-  if (userHelper.hasToken()) {
+  const [authState, _] = useContext(AuthContext);
+  if (authState.id && authState.username) {
     return <Navigate to={routes.DASHBOARD_PATH} />;
   } else {
     return (

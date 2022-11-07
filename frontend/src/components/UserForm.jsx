@@ -4,8 +4,11 @@ import sessionsAPI from "../utils/api/sessions";
 import styled from "styled-components";
 import breakpoints from "../theme/breakpoints";
 
+import { useContext, useState } from "react";
+import { setAuthToken } from "../utils/providers/axios/axiosHelper.js";
+import jwt_decode from "jwt-decode";
+
 import routes from "../utils/providers/router/routes";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Button from "./Button";
@@ -14,6 +17,7 @@ import Icon from "./Icon";
 
 import { CiUser, CiLock } from "react-icons/ci";
 import LoginIcon from "../assets/icons/login.svg";
+import { AuthContext } from "../utils/providers/auth/authContext";
 
 const FormContainer = styled.form`
   display: flex;
@@ -66,13 +70,26 @@ const ErrorContainer = styled.div`
 
 export default function UserForm({ isNew }) {
   const navigate = useNavigate();
+  const [authState, setAuthState] = useContext(AuthContext);
   const [error, setError] = useState("");
   const [user, setUser] = useState({
     username: "",
     password: "",
   });
 
-  // register and login
+  function saveToken(token) {
+    if (!token) {
+      return;
+    }
+    setAuthToken(token);
+    localStorage.setItem("jwt", JSON.stringify(token));
+    const decodedToken = jwt_decode(token);
+    setAuthState({
+      id: decodedToken.id,
+      username: decodedToken.username,
+    });
+  }
+
   function handleRegister(e) {
     e.preventDefault();
     setError("");
@@ -87,16 +104,14 @@ export default function UserForm({ isNew }) {
         return sessionsAPI.login(user.username, user.password);
       })
       .then((token) => {
-        localStorage.setItem("jwt", JSON.stringify(token));
+        saveToken(token);
         navigate(routes.DASHBOARD_PATH);
       })
       .catch((err) => {
-        console.log(err);
         setError(err.response.data.message);
       });
   }
 
-  // login
   function handleLogin(e) {
     e.preventDefault();
     setError("");
@@ -108,7 +123,7 @@ export default function UserForm({ isNew }) {
           username: "",
           password: "",
         });
-        localStorage.setItem("jwt", JSON.stringify(token));
+        saveToken(token);
         navigate(routes.DASHBOARD_PATH);
       })
       .catch((err) => {

@@ -9,4 +9,7 @@ export default {
       })
       .then((res) => res.data);
   },
+  getUserInfo(userId) {
+    return axios.get(`/api/v1/users/${userId}`).then((res) => res.data);
+  },
 };

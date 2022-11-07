@@ -10,7 +10,8 @@ import LogoSrc from "../../assets/delegated-logo.png";
 import LoginIcon from "../../assets/icons/login.svg";
 import LogoutIcon from "../../assets/icons/logout.svg";
 
-import { useState } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../../utils/providers/auth/authContext";
 
 const HeaderWrapper = styled.header`
   position: ${(props) => (props.opacityMode ? "absolute" : "sticky")};
@@ -24,6 +25,7 @@ const HeaderWrapper = styled.header`
   align-items: center;
   justify-content: space-between;
   padding: 0.2em 1.5em;
+  z-index: 100;
 
   @media only screen and ${breakpoints.tablet} {
     padding: 0.3em 4em;
@@ -49,18 +51,21 @@ function SignInButton() {
   );
 }
 
-function handleLogout(setToken, navigate) {
-  localStorage.removeItem("jwt");
-  setToken("");
-  navigate(routes.HOME_PATH);
-}
+function LogoutButton() {
+  const navigate = useNavigate();
+  const [_, setAuthState] = useContext(AuthContext);
 
-function LogoutButton({ setToken, navigate }) {
+  function handleLogout() {
+    localStorage.removeItem("jwt");
+    setAuthState({
+      id: "",
+      username: "",
+    });
+    navigate(routes.HOME_PATH);
+  }
+
   return (
-    <Button
-      onClick={() => handleLogout(setToken, navigate)}
-      backgroundColor={"var(--secondary)"}
-    >
+    <Button onClick={() => handleLogout()} backgroundColor={"var(--secondary)"}>
       <Icon src={LogoutIcon} height="20px" width="24px"></Icon>
       Logout
     </Button>
@@ -68,16 +73,21 @@ function LogoutButton({ setToken, navigate }) {
 }
 
 export default function Header({ opacityMode }) {
-  const [token, setToken] = useState(localStorage.getItem("jwt") || "");
-  const navigate = useNavigate();
+  const [authState, _] = useContext(AuthContext);
 
   return (
     <HeaderWrapper opacityMode={opacityMode}>
-      <Link to={routes.HOME_PATH}>
+      <Link
+        to={
+          authState && authState.id && authState.username
+            ? routes.TRIPS_PATH
+            : routes.HOME_PATH
+        }
+      >
         <Logo src={LogoSrc} height="60px" width="140px" />
       </Link>
-      {token ? (
-        <LogoutButton setToken={setToken} navigate={navigate} />
+      {authState && authState.id && authState.username ? (
+        <LogoutButton />
       ) : (
         <SignInButton />
       )}

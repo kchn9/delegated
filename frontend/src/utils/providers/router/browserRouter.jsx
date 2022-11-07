@@ -13,6 +13,8 @@ import {
   LoginPage,
 } from "../../../pages";
 
+import tripsAPI from "../../api/trips";
+
 export default createBrowserRouter([
   {
     path: routes.ROOT_PATH,
@@ -41,6 +43,9 @@ export default createBrowserRouter([
           {
             path: routes.TRIP_PATH,
             element: <TripView />,
+            loader: ({ params }) => {
+              return tripsAPI.getTripDetails(params.id);
+            },
           },
           {
             path: routes.MAP_PATH,
