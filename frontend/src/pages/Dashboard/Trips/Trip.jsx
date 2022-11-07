@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import Flag from "react-world-flags";
-import lookup from "country-code-lookup";
 import { Link } from "react-router-dom";
 import routes from "../../../utils/providers/router/routes";
 import daysFormatter from "../../../utils/daysFormatter";
+import { iso2 } from "../../../utils/countries";
 
 const FlagFallback = styled.div`
   display: inline-block;
@@ -53,7 +53,7 @@ export default function Trip({ country, created, title, daysLength, id }) {
       >
         <Title>
           <Flag
-            code={lookup.byCountry(country)?.iso3}
+            code={iso2(country)}
             fallback={<FlagFallback></FlagFallback>}
             height="16"
             style={{
