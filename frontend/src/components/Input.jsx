@@ -38,6 +38,10 @@ const StyledInput = styled.input`
     outline: 3px solid var(--accent);
   }
 
+  &::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  }
+
   &::placeholder {
     font-family: inherit;
     font-size: 0.9em;
