@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import breakpoints from "../../../theme/breakpoints";
 import Flag from "react-world-flags";
 import { Link } from "react-router-dom";
 import routes from "../../../utils/providers/router/routes";
@@ -13,28 +14,46 @@ const FlagFallback = styled.div`
 `;
 
 const TripContainer = styled.div`
-  background-color: var(--primary);
-  width: 100%;
-  padding: 1em 3em;
-  box-sizing: border-box;
-  border-radius: 0.8em;
-  margin-top: 1em;
-  cursor: pointer;
+  margin: 1em 1.5em 0 1.5em;
+  padding: 0.8em 1.4em;
   border: 2px solid transparent;
+  border-radius: 0.4em;
+  background-color: var(--primary);
+  box-sizing: border-box;
   transition: all ease 200ms;
+  cursor: pointer;
 
   &:hover {
     border-color: var(--white);
+  }
+
+  @media only screen and ${breakpoints.tablet} {
+    padding: 1em 3em;
+    margin: 1.2em 0 0 0;
   }
 `;
 
 const LenghtParagraph = styled.p`
   color: var(--white);
+  margin: 0.6em 0;
+  font-size: 14px;
+
+  @media only screen and ${breakpoints.desktop} {
+    font-size: 16px;
+  }
 `;
 
 const Title = styled.h4`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   margin: 0;
   color: var(--white);
+  font-size: 15px;
+
+  @media only screen and ${breakpoints.desktop} {
+    font-size: 17px;
+  }
 `;
 
 const CreatedParagraph = styled.p`
@@ -42,6 +61,10 @@ const CreatedParagraph = styled.p`
   padding-top: 8px;
   margin: 0;
   color: var(--grey);
+  font-size: 13px;
+  @media only screen and ${breakpoints.desktop} {
+    font-size: 15px;
+  }
 `;
 
 export default function Trip({ country, created, title, daysLength, id }) {

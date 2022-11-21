@@ -30,7 +30,10 @@ const SidebarWrapper = styled.aside`
 `;
 const ContentWrapper = styled.main`
   grid-column: 5 / span 8;
-  padding: 2em 0;
+
+  @media only screen and ${breakpoints.tablet} {
+    padding: 2em 0;
+  }
 `;
 
 export default function Dashboard() {

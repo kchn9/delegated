@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import breakpoints from "../../../theme/breakpoints";
 
 import Loader from "../../../components/Loader";
 import SubTitle from "../../../components/SubTitle";
@@ -10,8 +11,10 @@ import usersAPI from "../../../utils/api/users.js";
 import { useContext, useEffect, useState } from "react";
 
 const TripsWrapper = styled.div`
-  margin-top: 1.5em;
   padding: 1.2em 0;
+  @media only screen and ${breakpoints.tablet} {
+    margin-top: 1.5em;
+  }
 `;
 
 const FallbackText = styled.p`
