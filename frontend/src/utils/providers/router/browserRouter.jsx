@@ -12,7 +12,7 @@ import {
   RegisterPage,
   LoginPage,
 } from "../../../pages";
-
+import { setAuthToken } from "../axios/axiosHelper";
 import tripsAPI from "../../api/trips";
 
 export default createBrowserRouter([
@@ -44,6 +44,7 @@ export default createBrowserRouter([
             path: routes.TRIP_PATH,
             element: <TripView />,
             loader: ({ params }) => {
+              setAuthToken(JSON.parse(localStorage.getItem("jwt")));
               return tripsAPI.getTripDetails(params.id);
             },
           },
