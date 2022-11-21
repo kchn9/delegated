@@ -85,6 +85,11 @@ const Action = styled.button`
   min-width: 10ch;
   font-size: clamp(14px, 2vw, 16px);
   text-align: center;
+  margin-left: 1em;
+
+  &:first-child {
+    margin-left: 0;
+  }
 `;
 
 const StyledParagraph = styled.p`
@@ -174,8 +179,12 @@ export default function TripView() {
           You spent there {daysFormatter.formatDaysLength(trip?.daysLength)}
           &nbsp;what gives&nbsp;
           <HighlightText>
-            {Number(getDiemRate(iso2(trip?.country)).amount) *
-              Number(daysFormatter.calculateDiemBasis(trip?.daysLength))}
+            {(
+              Number(getDiemRate(iso2(trip?.country)).amount) *
+              Number(daysFormatter.calculateDiemBasis(trip?.daysLength))
+            ).toLocaleString([], {
+              maximumFractionDigits: 2,
+            })}
             {getDiemRate(iso2(trip?.country)).currency}
           </HighlightText>
         </IconParagraph>
@@ -190,13 +199,17 @@ export default function TripView() {
             Back to dashboard
           </Action>
         </Link>
+        <FlexFill />
+        <Action backgroundColor={"CornflowerBlue"} disabled>
+          Edit trip
+        </Action>
         <Action
           onClick={() =>
             tripsAPI
               .deleteTrip(trip.id)
               .then(() => navigate(routes.DASHBOARD_PATH))
           }
-          backgroundColor={"#CB4335"}
+          backgroundColor={"IndianRed"}
         >
           Delete trip
         </Action>

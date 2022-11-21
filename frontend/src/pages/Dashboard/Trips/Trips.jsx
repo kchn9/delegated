@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import breakpoints from "../../../theme/breakpoints";
 
+import { Virtuoso } from "react-virtuoso";
 import Loader from "../../../components/Loader";
 import SubTitle from "../../../components/SubTitle";
 
@@ -24,7 +25,7 @@ const FallbackText = styled.p`
 
 export default function Trips() {
   const [authState, _] = useContext(AuthContext);
-  const [trips, setTrips] = useState([]);
+  const [trips, setTrips] = useState(() => []);
   const [loading, setLoading] = useState(false);
 
   function fetchTrips() {
@@ -53,8 +54,24 @@ export default function Trips() {
       {loading && <Loader height="32px" width="32px" />}
 
       <TripsWrapper>
-        {trips.length > 0 &&
-          trips.map((trip) => <Trip key={trip.id} {...trip}></Trip>)}
+        {trips && trips.length > 0 && (
+          <Virtuoso
+            style={{ height: "75vh" }}
+            data={trips}
+            itemContent={(index, trip) => {
+              return <Trip key={index} {...trip}></Trip>;
+            }}
+            components={{
+              Footer: () => {
+                if (trips.length > 4) {
+                  return (
+                    <FallbackText>End of your trips list. Cheers.</FallbackText>
+                  );
+                }
+              },
+            }}
+          />
+        )}
       </TripsWrapper>
     </>
   );
