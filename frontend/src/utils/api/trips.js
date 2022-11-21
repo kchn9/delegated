@@ -15,4 +15,8 @@ export default {
   getTripDetails(id) {
     return axios.get(`/api/v1/trips/${id}`).then((res) => res.data);
   },
+
+  deleteTrip(id) {
+    return axios.delete(`/api/v1/trips/${id}`).then((res) => res.data);
+  },
 };

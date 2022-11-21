@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import breakpoints from "../../../theme/breakpoints";
 import Icon from "../../../components/Icon";
 import Flag from "react-world-flags";
 
@@ -12,7 +11,10 @@ import daysFormatter from "../../../utils/daysFormatter";
 import { iso2 } from "../../../utils/countries";
 import { getDiemRate } from "../../../utils/diemRates";
 
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
+import routes from "../../../utils/providers/router/routes";
+
+import tripsAPI from "../../../utils/api/trips";
 
 const Container = styled.div`
   display: flex;
@@ -63,6 +65,28 @@ const HighlightText = styled.span`
   margin-left: 2ch;
 `;
 
+const FlexFill = styled.div`
+  flex: 1;
+`;
+
+const Actions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 0.9em 0;
+`;
+
+const Action = styled.button`
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+  background-color: ${(props) => props.backgroundColor || "var(--primary)"};
+  color: ${(props) => props.color || "var(--white)"};
+  padding: 0.5em 0.8em;
+  min-width: 10ch;
+  font-size: clamp(14px, 2vw, 16px);
+  text-align: center;
+`;
+
 const StyledParagraph = styled.p`
   margin-left: 1em;
   display: flex;
@@ -79,12 +103,10 @@ function IconParagraph(props) {
   );
 }
 
-const FlexFill = styled.div`
-  flex: 1;
-`;
-
 export default function TripView() {
+  const navigate = useNavigate();
   const trip = useLoaderData();
+
   return (
     <Container>
       <Title>{trip?.title}</Title>
@@ -151,7 +173,6 @@ export default function TripView() {
         <IconParagraph src={PerDiemIcon}>
           You spent there {daysFormatter.formatDaysLength(trip?.daysLength)}
           &nbsp;what gives&nbsp;
-          <FlexFill />
           <HighlightText>
             {Number(getDiemRate(iso2(trip?.country)).amount) *
               Number(daysFormatter.calculateDiemBasis(trip?.daysLength))}
@@ -159,6 +180,27 @@ export default function TripView() {
           </HighlightText>
         </IconParagraph>
       </Section>
+
+      <Actions>
+        <Link
+          to={routes.DASHBOARD_PATH}
+          style={{ textDecoration: "none", color: "unset" }}
+        >
+          <Action backgroundColor={"var(--primary)"} color={"var(--white)"}>
+            Back to dashboard
+          </Action>
+        </Link>
+        <Action
+          onClick={() =>
+            tripsAPI
+              .deleteTrip(trip.id)
+              .then(() => navigate(routes.DASHBOARD_PATH))
+          }
+          backgroundColor={"#CB4335"}
+        >
+          Delete trip
+        </Action>
+      </Actions>
     </Container>
   );
 }
