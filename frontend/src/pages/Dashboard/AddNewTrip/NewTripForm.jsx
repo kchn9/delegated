@@ -4,6 +4,7 @@ import Button from "../../../components/Button";
 import CountrySelect from "./CountrySelect";
 
 import routes from "../../../utils/providers/router/routes";
+import breakpoints from "../../../theme/breakpoints";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../utils/providers/auth/authContext";
@@ -15,11 +16,16 @@ const FormContainer = styled.form`
   margin-top: 1.8em;
   flex-direction: column;
   gap: 1.2em;
+  padding: 0 1.5em;
 `;
 
 const FieldWrapper = styled.div`
-  display: flex;
   gap: 1.2em;
+  display: flex;
+  flex-direction: column;
+  @media only screen and ${breakpoints.mobile} {
+    flex-direction: row;
+  }
 `;
 
 const ButtonWrapper = styled.div`
