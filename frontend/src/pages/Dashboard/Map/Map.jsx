@@ -9,7 +9,7 @@ const MapContainer = styled.section`
 export default function Map() {
   return (
     <MapContainer>
-      <SubTitle>Coming soon</SubTitle>
+      <SubTitle>Browse your trips on map</SubTitle>
     </MapContainer>
   );
 }
