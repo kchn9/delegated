@@ -1,30 +1,28 @@
 import styled from "styled-components";
-import Button from "../../../components/Button";
+import breakpoints from "../../../theme/breakpoints";
 import Icon from "../../../components/Icon";
 import Flag from "react-world-flags";
 
+import LocationIcon from "../../../assets/icons/location.svg";
 import CalendarIcon from "../../../assets/icons/calendar-date.svg";
 import TimeIcon from "../../../assets/icons/time.svg";
-import LocationIcon from "../../../assets/icons/location.svg";
-import BackIcon from "../../../assets/icons/arrow-left.svg";
+import PerDiemIcon from "../../../assets/icons/per-diem.svg";
 
 import daysFormatter from "../../../utils/daysFormatter";
 import { iso2 } from "../../../utils/countries";
 import { getDiemRate } from "../../../utils/diemRates";
 
-import { Link, useLoaderData } from "react-router-dom";
-import routes from "../../../utils/providers/router/routes";
+import { useLoaderData } from "react-router-dom";
 
-const ViewContainer = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
+  margin: 0 1.5em;
 `;
 
 const Title = styled.h3`
   text-align: center;
   font-size: clamp(16px, 1.6vw, 26px);
-  margin: 0 0 1.25em 0;
-  padding: 0 3em;
   color: var(--black);
 
   &::first-letter {
@@ -33,49 +31,20 @@ const Title = styled.h3`
   }
 `;
 
+const Section = styled.section`
+  background-color: var(--l-grey);
+  font-size: clamp(12px, 1.2vw, 16px);
+
+  padding: 0.8em 1.2em;
+  margin: 0.9em 0;
+`;
+
 const SubTitle = styled.h4`
   font-size: clamp(16px, 1.5vw, 24px);
   margin: 1.2em 0 0.6em 0;
   color: var(--primary);
-`;
-
-const LocationParagraph = styled.h5`
-  display: flex;
   margin: 0;
-  padding: 1.5em 2em;
-  border-radius: 0.5em;
-  font-size: clamp(12px, 1.2vw, 16px);
-  background-color: var(--l-grey);
-  font-weight: 600;
-  align-items: center;
-`;
-
-const FlexParagraph = styled.p`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  margin: 0.4em 0;
-  font-weight: 600;
-`;
-
-const HightlightSpan = styled.span`
-  background-color: var(--primary);
-  color: var(--white);
-  padding: 0.6ch 1ch;
-  border-radius: 1ch;
-`;
-
-const LengthSpan = styled.span`
-  background-color: var(--accent);
-  color: var(--secondary);
-  margin: 0 0.5ch;
-  padding: 0.6ch 1ch;
-  border-radius: 1ch;
-`;
-
-const LenghtParagraph = styled.p`
-  color: var(--black);
-  font-weight: 600;
+  margin-bottom: 0.6em;
 `;
 
 const FlagFallback = styled.div`
@@ -85,127 +54,111 @@ const FlagFallback = styled.div`
   background-color: var(--gray);
 `;
 
-const CreatedParagraph = styled.p`
-  border-top: 1px solid var(--grey);
-  margin: 0;
-  padding-top: 0.4em;
-  margin-top: 1.9em;
-  color: var(--gray);
+const HighlightText = styled.span`
+  background-color: var(--primary);
+  color: var(--white);
+  font-weight: 600;
+  padding: 0.75ch 1ch;
+  border-radius: 0.5em;
+  margin-left: 2ch;
 `;
 
-const DateWrapper = styled.div`
-  display: flex;
-  align-items: start;
-  justify-items: center;
-  flex-direction: column;
-`;
-
-const DatesContainer = styled.div`
+const StyledParagraph = styled.p`
+  margin-left: 1em;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1em 2.1em;
-  background-color: var(--l-grey);
-  border-radius: 0.5em;
+`;
+
+function IconParagraph(props) {
+  return (
+    <StyledParagraph>
+      <Icon src={props.src} height="24px" width="24px" />
+      {props.children}
+    </StyledParagraph>
+  );
+}
+
+const FlexFill = styled.div`
+  flex: 1;
 `;
 
 export default function TripView() {
   const trip = useLoaderData();
-
   return (
-    <ViewContainer>
+    <Container>
       <Title>{trip?.title}</Title>
-      <SubTitle>Details:</SubTitle>
-      <LocationParagraph>
-        <Icon src={LocationIcon} height="24px" width="24px" />
-        Where? &nbsp;
-        <div style={{ flex: 1 }}></div>
-        <HightlightSpan>
-          <Flag
-            code={iso2(trip?.country)}
-            fallback={<FlagFallback></FlagFallback>}
-            height="16"
-            style={{
-              marginRight: "8px",
-              position: "relative",
-              top: "3px",
-            }}
-          />
-          {trip?.country}
-        </HightlightSpan>
-      </LocationParagraph>
-      <SubTitle>Trip:</SubTitle>
-      <DatesContainer>
-        <DateWrapper>
-          <FlexParagraph>
-            <Icon src={CalendarIcon} height="24px" width="24px" />
-            Started on&nbsp;
-            <HightlightSpan>
-              {new Date(trip?.startDate).toLocaleDateString()}
-            </HightlightSpan>
-          </FlexParagraph>
-          <FlexParagraph>
-            <Icon src={TimeIcon} height="24px" width="24px" />
-            at&nbsp;
-            <HightlightSpan>
-              {new Date(trip?.startDate).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-            </HightlightSpan>
-          </FlexParagraph>
-        </DateWrapper>
 
-        <LenghtParagraph>
-          <LengthSpan>
-            {daysFormatter.formatDaysLength(trip?.daysLength)}
-          </LengthSpan>
-        </LenghtParagraph>
+      <Section>
+        <SubTitle>Details:</SubTitle>
 
-        <DateWrapper>
-          <FlexParagraph>
-            <Icon src={CalendarIcon} height="24px" width="24px" />
-            Finished on&nbsp;
-            <HightlightSpan>
-              {new Date(trip?.endDate).toLocaleDateString()}
-            </HightlightSpan>
-          </FlexParagraph>
-          <FlexParagraph>
-            <Icon src={TimeIcon} height="24px" width="24px" />
-            at&nbsp;
-            <HightlightSpan>
-              {new Date(trip?.endDate).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-            </HightlightSpan>
-          </FlexParagraph>
-        </DateWrapper>
-      </DatesContainer>
-      <SubTitle>Per diem:</SubTitle>
-      {Number(getDiemRate(iso2(trip?.country)).amount) *
-        Number(daysFormatter.calculateDiemBasis(trip?.daysLength))}
-      {getDiemRate(iso2(trip?.country)).currency}
+        <IconParagraph src={LocationIcon}>
+          Destination: &nbsp;
+          <FlexFill />
+          <HighlightText>
+            <Flag
+              code={iso2(trip?.country)}
+              fallback={<FlagFallback></FlagFallback>}
+              height="16"
+              style={{
+                marginRight: "8px",
+                position: "relative",
+                top: "3px",
+              }}
+            />
+            {trip.country}
+          </HighlightText>
+        </IconParagraph>
 
-      <Link
-        to={routes.TRIPS_PATH}
-        style={{
-          marginTop: "2em",
-          textDecoration: "none",
-          display: "flex",
-          flexDirection: "column",
-          width: "20%",
-          justifyContent: "center",
-        }}
-      >
-        <Button>
-          <Icon src={BackIcon} height="24px" width="24px" color="white" />
-          Back
-        </Button>
-      </Link>
-      <CreatedParagraph>
-        Created on {new Date(trip?.created).toLocaleDateString()}
-      </CreatedParagraph>
-    </ViewContainer>
+        <IconParagraph src={CalendarIcon}>
+          Beginning on: &nbsp;
+          <FlexFill />
+          <HighlightText>
+            {new Date(trip?.startDate).toLocaleDateString()}
+          </HighlightText>
+        </IconParagraph>
+        <IconParagraph src={TimeIcon}>
+          Beginning at: &nbsp;
+          <FlexFill />
+          <HighlightText>
+            {new Date(trip?.startDate).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </HighlightText>
+        </IconParagraph>
+        <IconParagraph src={CalendarIcon}>
+          End on: &nbsp;
+          <FlexFill />
+          <HighlightText>
+            {new Date(trip?.endDate).toLocaleDateString()}
+          </HighlightText>
+        </IconParagraph>
+        <IconParagraph src={TimeIcon}>
+          End at: &nbsp;
+          <FlexFill />
+          <HighlightText>
+            {new Date(trip?.endDate).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </HighlightText>
+        </IconParagraph>
+      </Section>
+
+      <Section>
+        <SubTitle>Per diem:</SubTitle>
+        <IconParagraph src={PerDiemIcon}>
+          You spent there {daysFormatter.formatDaysLength(trip?.daysLength)}
+          &nbsp;what gives&nbsp;
+          <FlexFill />
+          <HighlightText>
+            {Number(getDiemRate(iso2(trip?.country)).amount) *
+              Number(daysFormatter.calculateDiemBasis(trip?.daysLength))}
+            {getDiemRate(iso2(trip?.country)).currency}
+          </HighlightText>
+        </IconParagraph>
+      </Section>
+    </Container>
   );
 }
