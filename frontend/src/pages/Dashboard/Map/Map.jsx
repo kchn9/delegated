@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import SubTitle from "../../../components/SubTitle";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useMemo, useEffect, useState } from "react";
 import {
-  Marker,
+  Graticule,
+  Line,
   ComposableMap,
   Geographies,
   Geography,
@@ -39,7 +40,6 @@ const StyledGeography = styled(Geography)`
 export default function Map() {
   const [authState, _] = useContext(AuthContext);
   const [trips, setTrips] = useState(() => []);
-
   function fetchTrips() {
     if (authState && authState.id) {
       usersAPI
@@ -54,11 +54,17 @@ export default function Map() {
   useEffect(() => {
     fetchTrips();
   }, [authState]);
+  const sortedTrips = useMemo(() => {
+    return [...trips].sort(function (a, b) {
+      return new Date(a.created) - new Date(b.created);
+    });
+  }, [trips]);
 
   return (
     <MapContainer>
       <SubTitle>Browse your trips on map</SubTitle>
       <StyledMap>
+        <Graticule stroke={"var(--l-grey)"} />
         <Geographies geography={map}>
           {({ geographies }) =>
             geographies.map((geo) => (
@@ -66,13 +72,23 @@ export default function Map() {
             ))
           }
         </Geographies>
-        {trips &&
-          trips.length > 0 &&
-          trips.map((trip) => (
-            <Marker coordinates={getPosFromCountry(trip.country)}>
-              <circle r={4} fill={"var(--accent)"} />
-            </Marker>
-          ))}
+        {sortedTrips &&
+          sortedTrips.length > 1 &&
+          sortedTrips.map((trip, index, array) => {
+            const intensity = Math.round((0.4 + Math.random() * 0.5) * 100, 1);
+            console.log(trip.country);
+            if (array.length > index + 1)
+              return (
+                <Line
+                  key={index}
+                  from={getPosFromCountry(trip.country)}
+                  to={getPosFromCountry(array[index + 1].country)}
+                  stroke={`hsl(37.8deg, 100%, ${intensity}%)`}
+                  strokeWidth={4}
+                  strokeLinecap="round"
+                />
+              );
+          })}
       </StyledMap>
     </MapContainer>
   );
