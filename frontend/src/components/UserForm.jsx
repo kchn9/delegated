@@ -26,7 +26,7 @@ const FormContainer = styled.form`
   max-height: 300px;
   height: 32vh;
   min-height: 230px;
-  margin-top: 8px;
+  margin-top: 2em;
   gap: 8px;
 `;
 
@@ -56,7 +56,7 @@ const ErrorContainer = styled.div`
   background-color: rgba(200, 70, 70, 0.2);
   box-sizing: border-box;
   padding: 0.5em 1.2em;
-  margin: 0 auto;
+  margin: 0 auto 1em auto;
   border-radius: 0.5em;
   width: 80%;
   max-width: 500px;
