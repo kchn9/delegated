@@ -36,8 +36,11 @@ const tripSchema = new mongoose.Schema({
       const end = new Date(this.endDate);
       return (end - start) / (1000 * 60 * 60 * 24); // 1000ms in s, 60s in min, 60min in h, 24h in day
     },
-    validate: function (v) {
-      return v > 0;
+    validate: {
+      validator: function (v) {
+        return v > 0;
+      },
+      message: (props) => `${props.value} should be greater than 0!`,
     },
   },
   created: {

@@ -30,6 +30,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const Error = styled.div`
+  text-align: center;
   padding: 1em 1.5em;
   border-radius: 0.5em;
   border: 2px solid rgba(200, 70, 70, 0.8);
@@ -71,19 +72,19 @@ export default function NewTripForm() {
     });
   }, [end]);
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState(false);
   function handleTripSubmit(e) {
     e.preventDefault();
     setError("");
     tripsAPI
       .createTrip(trip.country, trip.startDate, trip.endDate, authState.id)
       .then(() => navigate(routes.TRIPS_PATH))
-      .catch((err) => setError(err.response.data.message));
+      .catch(() => setError(true));
   }
 
   return (
     <FormContainer onSubmit={(e) => handleTripSubmit(e)}>
-      {error && <Error>{error}</Error>}
+      {error && <Error>{"Trip end date can not exceed start date."}</Error>}
       <FieldWrapper>
         <CountrySelect
           value={trip.country}

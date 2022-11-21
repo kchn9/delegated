@@ -39,6 +39,7 @@ const errorHandler = (error, req, res, next) => {
   ) {
     return res.status(400).json({
       message: error.message,
+      errors: error.erros,
     });
   }
   if (error.name === "JsonWebTokenError") {

@@ -33,6 +33,11 @@ a:hover {
   color: unset;
 }
 
+input[type="date"],
+input[type="time"] {
+  font-family: inherit;
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
