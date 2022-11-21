@@ -62,6 +62,7 @@ const CreatedParagraph = styled.p`
   margin: 0;
   color: var(--grey);
   font-size: 13px;
+
   @media only screen and ${breakpoints.desktop} {
     font-size: 15px;
   }
