@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Button from "../../components/Button";
 import { Link, NavLink } from "react-router-dom";
 import routes from "../../utils/providers/router/routes";
+import breakpoints from "../../theme/breakpoints";
 
 import { useContext } from "react";
 import { AuthContext } from "../../utils/providers/auth/authContext";
@@ -9,13 +10,27 @@ import { AuthContext } from "../../utils/providers/auth/authContext";
 const SidebarContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 80vh;
-  border-right: 1px solid var(--grey);
+  border-bottom: 1px solid var(--grey);
+  padding: 0.1em 1.5em;
+
+  @media only screen and ${breakpoints.tablet} {
+    height: 80vh;
+    padding: 0;
+    border-right: 1px solid var(--grey);
+    border-bottom: none;
+  }
 `;
 
 const GreetingsContainer = styled.div`
   display: flex;
   flex-direction: column;
+  text-align: center;
+  padding-bottom: 1em;
+
+  @media only screen and ${breakpoints.tablet} {
+    text-align: unset;
+    padding-bottom: unset;
+  }
 `;
 
 const WelcomeText = styled.span`
@@ -29,14 +44,20 @@ const UsernameText = styled.span`
 `;
 
 const ActionsContainer = styled.div`
-  border-bottom: 1px solid var(--grey);
-  margin: 1.6em 2em 1.6em 0;
+  @media only screen and ${breakpoints.tablet} {
+    border-bottom: 1px solid var(--grey);
+
+    margin: 1.6em 2em 1.6em 0;
+  }
 `;
 
 const NavigationContainer = styled.nav`
   display: flex;
   flex-direction: column;
-  margin: 0 2em 1.6em 0;
+
+  @media only screen and ${breakpoints.tablet} {
+    margin: 0 2em 1.6em 0;
+  }
 
   & > a {
     margin-bottom: 0.8em;

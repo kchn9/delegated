@@ -7,13 +7,12 @@ import routes from "../../utils/providers/router/routes.js";
 
 const DashboardContainer = styled.div`
   flex: 1 0 100vh;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
   gap: 2em;
 
   @media only screen and ${breakpoints.tablet} {
-    padding: 0 4em;
+    grid-template-columns: repeat(12, 1fr);
     display: grid;
+    padding: 0 4em;
   }
 
   @media only screen and ${breakpoints.laptop} {
