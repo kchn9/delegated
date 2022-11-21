@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
   ],
 });
 userSchema.plugin(uniqueValidator, {
-  message: `has to be unique.`,
+  message: "has to be unique.",
 });
 
 userSchema.set("toJSON", {
