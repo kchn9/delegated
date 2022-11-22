@@ -20,6 +20,14 @@ mongoose
   });
 
 app.use(express.static("dist"));
+app.use("/home", express.static("dist"));
+app.use("/register", express.static("dist"));
+app.use("/login", express.static("dist"));
+app.use("/dashboard", express.static("dist"));
+app.use("/dashboard/trips", express.static("dist"));
+app.use("/dashboard/trips/new", express.static("dist"));
+app.use("/dashboard/map", express.static("dist"));
+
 app.use(cors());
 app.use(express.json());
 app.use(middleware.requestLogger);
