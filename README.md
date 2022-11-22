@@ -1,4 +1,4 @@
-<img src="https://iili.io/HdulBGS.png" alt="HdulBGS.png" height="150" border="0"
+<img src="https://iili.io/HdulBGS.png" alt="HdulBGS.png" height="150" border="0"/>
 
 # Delegated
 
