@@ -2,8 +2,8 @@
 
 # Delegated
 
-Delegated is app to keep track of buisness trips.
-App have been deployed to _fly.io_.
+Delegated is app that allow users to track their buisness trips, calculate per diem and watch trips on world map.
+App has been succesfully deployed to _fly.io_.
 
 ### Check it live
 
