@@ -4,6 +4,7 @@ import { useContext, useMemo, useEffect, useState } from "react";
 import {
   Graticule,
   Line,
+  Marker,
   ComposableMap,
   Geographies,
   Geography,
@@ -54,11 +55,10 @@ export default function Map() {
   useEffect(() => {
     fetchTrips();
   }, [authState]);
-  const sortedTrips = useMemo(() => {
-    return [...trips].sort(function (a, b) {
-      return new Date(a.created) - new Date(b.created);
-    });
-  }, [trips]);
+  const sortedTrips = useMemo(
+    () => [...trips].sort((a, b) => new Date(a.created) - new Date(b.created)),
+    [trips]
+  );
 
   return (
     <MapContainer>
@@ -72,6 +72,7 @@ export default function Map() {
             ))
           }
         </Geographies>
+
         {sortedTrips &&
           sortedTrips.length > 1 &&
           sortedTrips.map((trip, index, array) => {
@@ -89,6 +90,28 @@ export default function Map() {
                 />
               );
           })}
+        {trips &&
+          trips.length > 0 &&
+          trips.map((trip) => (
+            <Marker key={trip} coordinates={getPosFromCountry(trip.country)}>
+              <text
+                textAnchor="middle"
+                style={{
+                  fontFamily: "system-ui",
+                  fontSize: "12px",
+                  fontWeight: "bold",
+                  textShadow: "1px 1px 1px #000",
+                  fill: "var(--white)",
+                  position: "relative",
+                  zIndex: "1000",
+                }}
+                y={-10}
+              >
+                {trip.country}
+              </text>
+              <circle r={4} fill={"var(--accent)"} />
+            </Marker>
+          ))}
       </StyledMap>
     </MapContainer>
   );
